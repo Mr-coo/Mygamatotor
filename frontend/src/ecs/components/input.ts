@@ -5,4 +5,6 @@ export interface Input extends Component{
   down: boolean;
   left: boolean;
   right: boolean;
+  jumpPressed?: boolean;
+  attackPressed?: boolean; 
 }

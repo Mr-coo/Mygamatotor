@@ -1,6 +1,7 @@
 import type { Component } from "../components/component";
 
 export class World {
+    tick = 0;
     nextEntityId = 0;
     entities: Set<number> = new Set();
     components: Map<string, Map<number, Component>> = new Map();
