@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "target": "ES2018",
+    "lib": ["ES2018"],
+    "declaration": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+    "strict": true
+  },
+}
