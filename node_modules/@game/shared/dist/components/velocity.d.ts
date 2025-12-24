@@ -1,5 +1,5 @@
-import type { Component } from "./component";
-export interface Velocity extends Component {
+import { Component } from "./component.js";
+export declare class Velocity extends Component {
     dx: number;
     dy: number;
 }

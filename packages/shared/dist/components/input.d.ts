@@ -1,5 +1,5 @@
-import type { Component } from "./component";
-export interface Input extends Component {
+import { Component } from "./component.js";
+export declare class Input extends Component {
     up: boolean;
     down: boolean;
     left: boolean;

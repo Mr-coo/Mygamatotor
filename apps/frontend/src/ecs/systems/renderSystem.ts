@@ -1,14 +1,15 @@
-import type { Position, World } from "@game/shared";
+import { Position } from "@game/shared";
+import type { World } from "../world";
 
 export function renderSystem(
   ctx: CanvasRenderingContext2D,
   world: World
 ) {
-  const pos = world.getComponent<Position>('position');
 
   ctx.clearRect(0, 0, 800, 600);
-
-  for (const [, p] of pos) {
+  
+  for(const e of world.query(Position)) {
+    const p = world.get(e, Position) as Position;
     ctx.fillRect(p.x, p.y, 20, 20);
   }
 }

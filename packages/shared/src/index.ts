@@ -1,7 +1,7 @@
-export * from './components/position';
-export * from './components/velocity';
-export * from './components/input';
+export * from './components/position.js';
+export * from './components/velocity.js';
+export * from './components/input.js';
 
-export * from './entities/entity';
+export * from './entities/entity.js';
 
-export * from './protocols/inputCommand'
+export * from './protocols/inputCommand.js'

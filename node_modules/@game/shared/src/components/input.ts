@@ -1,10 +1,10 @@
-import type { Component } from "./component";
+import { Component } from "./component.js";
 
-export interface Input extends Component{
-  up: boolean;
-  down: boolean;
-  left: boolean;
-  right: boolean;
+export class Input extends Component{
+  up: boolean = false;
+  down: boolean = false;
+  left: boolean = false;
+  right: boolean = false;
   jumpPressed?: boolean;
-  attackPressed?: boolean; 
+  attackPressed?: boolean;
 }

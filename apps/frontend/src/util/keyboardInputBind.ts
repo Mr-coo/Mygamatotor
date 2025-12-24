@@ -1,9 +1,9 @@
-import type { Input } from "../ecs/components/input";
-import type { World } from "../ecs/entities/world";
+import { Input, type Entity } from "@game/shared";
+import type { World } from "../ecs/world";
 
-export function bindKeyboard(world: World, player: number) {
+export function bindKeyboard(world: World, player: Entity) {
   window.addEventListener('keydown', e => {
-    const input = world.getComponent<Input>('input').get(player);
+    const input = world.get(player, Input) as Input;
     if (!input) return;
 
     if (e.key === 'w') input.up = true;
@@ -13,7 +13,7 @@ export function bindKeyboard(world: World, player: number) {
   });
 
   window.addEventListener('keyup', e => {
-    const input = world.getComponent<Input>('input').get(player);
+    const input = world.get(player, Input) as Input;
     if (!input) return;
 
     if (e.key === 'w') input.up = false;

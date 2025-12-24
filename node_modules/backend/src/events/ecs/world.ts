@@ -1,4 +1,4 @@
-import type { Entity } from "@game/shared";
+import { Entity } from "@game/shared";
 
 export class World {
   private nextId = 1;

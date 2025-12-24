@@ -1,6 +1,6 @@
-import type { Component } from "./component";
+import { Component } from "./component.js";
 
-export interface Position extends Component{
-  x: number;
-  y: number;
+export class Position extends Component{
+  x: number = 0;
+  y: number = 0;
 }

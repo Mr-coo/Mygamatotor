@@ -19,8 +19,8 @@ export function startGameLoop(
     inputSystem(world, networkClient, tick);
     movementSystem(world, dt);
     renderSystem(ctx, world);
+
     tick++;
-    console.log(tick);
     
     requestAnimationFrame(loop);
   }
