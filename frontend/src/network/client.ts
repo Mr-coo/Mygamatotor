@@ -1,19 +1,20 @@
 import type { InputCommand } from "./protocol";
+import { io } from 'socket.io-client';
 
 export class NetworkClient {
-    private socket: WebSocket
-    constructor() {
-        this.socket = new WebSocket('ws://localhost:8080');
+    private socket: ReturnType<typeof io>;
 
-        this.socket.onopen = () => {
-            console.log('WebSocket connection established');
-        };
+    constructor() {
+        this.socket = io('http://localhost:3000/events'); 
     }
 
-    sendInput(cmd: InputCommand) {
-        this.socket.send(JSON.stringify({
-        type: 'player:input',
-        payload: cmd
-        }));
+    sendCommand(command: InputCommand): void {
+        console.log(`Sending command: ${JSON.stringify(command)}`);
+        this.socket.emit('inputCommand', command);
+    }
+
+    on(event: string, callback: (...args: any[]) => void): void {
+        console.log(`Registering event listener for: ${event}`);
+        this.socket.on(event, callback);
     }
 }

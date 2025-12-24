@@ -20,5 +20,5 @@ export function inputSystem(world: World, networkClient: NetworkClient, tick: nu
     }
   }
 
-  networkClient.sendInput(command);
+  networkClient.sendCommand(command);
 }
