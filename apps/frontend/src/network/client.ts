@@ -1,19 +1,25 @@
-import type { Input, InputCommand } from '@game/shared';
+import type { EventSocket, Input, InputCommand } from '@game/shared';
 import { io } from 'socket.io-client';
 
 export class NetworkClient {
     private socket: ReturnType<typeof io>;
 
     constructor() {
+        console.trace("Connecting to server...");
         this.socket = io('http://localhost:3000/events'); 
     }
 
-    sendCommand(command: Input): void {
-        console.log(`Sending command: ${JSON.stringify(command)}`);
-        this.socket.emit('inputCommand', command);
+    sendCommand(event : EventSocket, data : any): void {
+        this.socket.emit(event.toString(), data);
     }
 
-    on(callback: (...args: any[]) => void): void {
-        this.socket.on('snapshot', callback);
+    on(event : EventSocket, callback: (...args: any[]) => void): void {
+        this.socket.on(event.toString(), callback);
+    }
+
+    getClientId(): string | undefined {
+        return this.socket.id;
     }
 }
+
+export const networkClient = new NetworkClient();

@@ -1,12 +1,10 @@
 import { Entity } from "@game/shared";
 
 export class World {
-  private nextId = 1;
   entities = new Set<Entity>();
   components = new Map<string, Map<Entity, any>>();
 
-  createEntity(): Entity {
-    const id = this.nextId++;
+  createEntity(id : Entity): Entity {
     this.entities.add(id);
     return id;
   }

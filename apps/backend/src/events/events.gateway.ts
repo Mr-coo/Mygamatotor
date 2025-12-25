@@ -1,6 +1,6 @@
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { Input, Position, Velocity } from '@game/shared';
+import { EventSocket, Input, Position, Snapshot, Velocity } from '@game/shared';
 import { Server } from 'http';
 import { GameLoop } from './game.loop';
 import { buildSnapshot } from './snapshot/snapshot.builder';
@@ -31,7 +31,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit, OnGate
       });
     }
 
-    const entity = this.loop.world.createEntity();
+    const entity = this.loop.world.createEntity(client.id);
     this.loop.world.addComponent(entity, Position, { x: 0, y: 0 });
     this.loop.world.addComponent(entity, Velocity, { dx: 0, dy: 0 });
     this.loop.world.addComponent(entity, Input, { up: false, down: false, left: false, right: false } );
@@ -44,7 +44,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit, OnGate
     this.loop.world.removeEntity(client.data.entity);
   }
 
-  @SubscribeMessage('inputCommand')
+  @SubscribeMessage(EventSocket.Input.toString())
   handleMessage(
     @MessageBody() data: any,
     @ConnectedSocket() client: Socket,
@@ -60,8 +60,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit, OnGate
     input.jumpPressed = data.jumpPressed;
   }
 
-  broadcastSnapshot(snapshot: any) {
-    // console.log(`Sending input to client ${snapshot.id}:`);
-    this.server.emit('snapshot', snapshot);
+  broadcastSnapshot(snapshot: Snapshot) {
+    this.server.emit(EventSocket.Snapshot.toString(), snapshot);
   }
 }
