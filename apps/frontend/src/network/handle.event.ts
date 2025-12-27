@@ -1,4 +1,4 @@
-import { Position, PositionSnapshot, type ConnectedDto, type Entity } from "@game/shared";
+import { Position, PositionSnapshot, Sprite, type ConnectedDto, type Entity } from "@game/shared";
 import type { World } from "../ecs/world";
 import { bindKeyboard } from "../util/keyboardInputBind";
 import type { Component } from "@game/shared/dist/components/component";
@@ -29,10 +29,17 @@ export function onPositionSnapshot(world : World, snapshot: PositionSnapshot) {
     }
 
     for(const [entity, position] of Object.entries(snapshot.positions)) {
+        const spriteComp = world.get(entity, Sprite) as Sprite;
         const posComp = world.get(entity, Position) as Position;
+        
+        if(spriteComp){
+            spriteComp.flipX = posComp.x > position.x;
+        }
+
         if (posComp) {
             posComp.x = position.x;
             posComp.y = position.y;
         }
+
     }
 }

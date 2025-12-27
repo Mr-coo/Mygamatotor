@@ -10,12 +10,12 @@ export function inputSystem(world: World) {
     const input = world.get(e, Input) as Input;
     const velocity = world.get(e, Velocity) as Velocity;
 
-    const speed = 20;
+    const speed = 1;
 
-    velocity.dx = input.left ? -speed : input.right ? speed : 0;
-    velocity.dy = input.up ? -speed : input.down ? speed : 0;
+    velocity.dx = (input.right ? speed : 0) - (input.left ? speed : 0);
+    velocity.dy = (input.down ? speed : 0) - (input.up ? speed : 0);
 
-    console.log(`INPUT SYSTEM ${e}`, velocity.dy)
+    // console.log(`INPUT SYSTEM ${e}`, velocity.dy)
     // input.left = input.right = input.up = input.down = false;
   }
 }

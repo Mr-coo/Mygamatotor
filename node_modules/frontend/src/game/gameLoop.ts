@@ -17,7 +17,7 @@ export function startGameLoop(
 
     inputSystem(world, networkClient, dt);
     movementSystem(world, dt);
-    renderSystem(ctx, world);
+    renderSystem(ctx, world, dt);
     
     requestAnimationFrame(loop);
   }

@@ -1,6 +1,6 @@
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { EventSocket, Input, Position, PositionSnapshot, Velocity } from '@game/shared';
+import { EventSocket, Input, Position, PositionSnapshot, Velocity , Size, Sprite } from '@game/shared';
 import { Server } from 'http';
 import { GameLoop } from './game.loop';
 import { buildConnectedDto, buildPositionSnapshot } from './dto/dto.builder';
@@ -35,6 +35,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit, OnGate
     this.loop.world.addComponent(entity, Position, { x: 0, y: 0 });
     this.loop.world.addComponent(entity, Velocity, { dx: 0, dy: 0 });
     this.loop.world.addComponent(entity, Input, { up: false, down: false, left: false, right: false } );
+    this.loop.world.addComponent(entity, Size, { width: 100, height: 100 });
+    this.loop.world.addComponent(entity, Sprite, { textureId: 'main.character' , flipX: false })
 
     client.data.entity = entity;
 

@@ -1,13 +1,27 @@
-import { Position, Velocity } from "@game/shared";
+import { Position, Size, Sprite, Velocity, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
 import { World } from "../world";
 
 export function movementSystem(world: World, deltaTime: number) {
-    for(const e of world.query(Position, Velocity)) {
+    for(const e of world.query(Position, Velocity, Size)) {
         const position = world.get(e, Position) as Position;
+        const size = world.get(e, Size) as Size;
         const velocity = world.get(e, Velocity) as Velocity;
 
-        position.x += velocity.dx * deltaTime;
-        position.y += velocity.dy * deltaTime;
-        console.log(`${e} in ${position.x} ${position.y} ${deltaTime}`)
+        const speed = 150;
+
+        var magnitude = Math.sqrt(velocity.dx*velocity.dx + velocity.dy*velocity.dy);
+
+        if (magnitude > 0) {
+            velocity.dx /= magnitude;
+            velocity.dy /= magnitude;
+        }
+
+        const newX = position.x + velocity.dx * deltaTime * speed;
+        const newY = position.y + velocity.dy * deltaTime * speed;
+
+        if(newX >= 0 && newX < WORLD_WIDTH-size.width) position.x = newX;
+        if(newY >= 0 && newY < WORLD_HEIGHT-size.height) position.y = newY;
+        
+        // console.log(`${e} in ${position.x} ${position.y} ${deltaTime}`)
     }
 }

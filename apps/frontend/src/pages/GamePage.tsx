@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { startGameLoop } from "../game/gameLoop";
 import { World } from "../ecs/world";
 import { networkClient } from "../network/client";
-import { EventSocket } from "@game/shared";
+import { EventSocket, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
 import { onConnected, onDisconnected, onPositionSnapshot } from "../network/handle.event";
 
 export function GamePage() {
@@ -11,11 +11,6 @@ export function GamePage() {
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext('2d')!;
-    ctx.fillStyle = `rgb(
-      ${Math.floor(Math.random() * 256)}, 
-      ${Math.floor(Math.random() * 256)}, 
-      ${Math.floor(Math.random() * 256)}
-    )`;
     const world = new World();
 
     networkClient.on(EventSocket.Connected, (data) => onConnected(world, data, networkClient.getClientId()!));
@@ -27,5 +22,5 @@ export function GamePage() {
     return () => {};
   }, []);
 
-  return <canvas ref={canvasRef} width={800} height={600} />;
+  return <canvas ref={canvasRef} width={WORLD_WIDTH} height={WORLD_HEIGHT} />;
 }
