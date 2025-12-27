@@ -1,4 +1,4 @@
-import { Position, PositionSnapshot, Sprite, type ConnectedDto, type Entity } from "@game/shared";
+import { Position, PositionSnapshot, SingleEntityDto, Sprite, type ConnectedDto, type Entity } from "@game/shared";
 import type { World } from "../ecs/world";
 import { bindKeyboard } from "../util/keyboardInputBind";
 import type { Component } from "@game/shared/dist/components/component";
@@ -40,6 +40,13 @@ export function onPositionSnapshot(world : World, snapshot: PositionSnapshot) {
             posComp.x = position.x;
             posComp.y = position.y;
         }
-
     }
+}
+
+export function onFoodCreated(world : World, data : SingleEntityDto){
+    world.createEntity(data.entity);
+    console.log(data.components);
+    Object.entries(data.components).map(([clsName, comp])=>{
+        world.addComponent(data.entity, clsName, comp);
+    })
 }

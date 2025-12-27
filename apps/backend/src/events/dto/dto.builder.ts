@@ -1,5 +1,5 @@
 // snapshot/snapshot.builder.ts
-import { ConnectedDto, Entity, Position, PositionSnapshot } from '@game/shared';
+import { ConnectedDto, Entity, Position, PositionSnapshot, SingleEntityDto } from '@game/shared';
 import { World } from '../ecs/world';
 import { Component } from '@game/shared/dist/components/component';
 
@@ -25,4 +25,16 @@ export function buildConnectedDto(world: World, entity: string) : ConnectedDto {
   );
 
   return new ConnectedDto(entities, components);
+}
+
+export function buildSingleEntityDto(entity: string, componentsList : Map<string, Component>) : SingleEntityDto {
+  const entities = entity;
+  const components : Record<string, Component> = {};
+
+  componentsList.forEach((val, key) => {
+    console.log(val, key);
+    components[key] = val;
+  })
+
+  return new SingleEntityDto(entities, components);
 }

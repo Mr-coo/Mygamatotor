@@ -4,6 +4,7 @@ import { EventSocket, Input, Position, PositionSnapshot, Velocity , Size, Sprite
 import { Server } from 'http';
 import { GameLoop } from './game.loop';
 import { buildConnectedDto, buildPositionSnapshot } from './dto/dto.builder';
+import { onConnected, onDisconnected } from './event.handle';
 
 @WebSocketGateway({
   namespace: 'events',
@@ -22,31 +23,11 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit, OnGate
   }
 
   handleConnection(client: Socket) {
-    console.log(`Client connected: ${client.id}`);
-
-    if(this.loop.isStart === false) {
-      this.loop.start(() => {
-        const snapshot = buildPositionSnapshot(this.loop.world);
-        this.broadcastData(EventSocket.PositionSnapshot, snapshot);
-      });
-    }
-
-    const entity = this.loop.world.createEntity(client.id);
-    this.loop.world.addComponent(entity, Position, { x: 0, y: 0 });
-    this.loop.world.addComponent(entity, Velocity, { dx: 0, dy: 0 });
-    this.loop.world.addComponent(entity, Input, { up: false, down: false, left: false, right: false } );
-    this.loop.world.addComponent(entity, Size, { width: 100, height: 100 });
-    this.loop.world.addComponent(entity, Sprite, { textureId: 'main.character' , flipX: false })
-
-    client.data.entity = entity;
-
-    this.broadcastData(EventSocket.Connected, buildConnectedDto(this.loop.world, entity));;
+    onConnected(this.loop, client, this.broadcastData.bind(this))
   }
 
   handleDisconnect(client: Socket) {
-    console.log(`Client disconnected: ${client.id}`);
-    this.loop.world.removeEntity(client.data.entity);
-    this.broadcastData(EventSocket.Disconnected, client.data.entity);
+    onDisconnected(this.loop, client, this.broadcastData.bind(this))
   }
 
   @SubscribeMessage(EventSocket.Input.toString())

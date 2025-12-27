@@ -22,8 +22,7 @@ export function renderSystem(
 
     ctx.translate(cx, cy);
     if(sprite.textureId == 'food'){
-      console.log(dt);
-      const scaleConst = Math.sin(number/5)/5 + 1; 
+      const scaleConst = Math.sin(number/5)/10 + 1; 
       ctx.scale(scaleConst, scaleConst);
     }
 

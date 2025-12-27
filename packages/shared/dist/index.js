@@ -8,4 +8,5 @@ export * from './protocols/inputCommand.js';
 export * from './enums/event.socket.js';
 export * from './dto/positionSnapshot.dto.js';
 export * from './dto/connected.dto.js';
+export * from './dto/singleEntity.dto.js';
 export * from './const/const.js';

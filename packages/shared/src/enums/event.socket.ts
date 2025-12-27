@@ -3,4 +3,5 @@ export enum EventSocket {
     Input,
     Connected,
     Disconnected,
+    FoodCreated,
 }
