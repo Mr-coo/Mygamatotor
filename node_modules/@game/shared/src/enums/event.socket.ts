@@ -1,4 +1,6 @@
 export enum EventSocket {
-    Snapshot,
-    Input
+    PositionSnapshot,
+    Input,
+    Connected,
+    Disconnected,
 }

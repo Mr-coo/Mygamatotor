@@ -1,4 +1,6 @@
 export declare enum EventSocket {
-    Snapshot = 0,
-    Input = 1
+    PositionSnapshot = 0,
+    Input = 1,
+    Connected = 2,
+    Disconnected = 3
 }

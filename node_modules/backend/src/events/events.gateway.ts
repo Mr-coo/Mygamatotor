@@ -1,9 +1,9 @@
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
-import { EventSocket, Input, Position, Snapshot, Velocity } from '@game/shared';
+import { EventSocket, Input, Position, PositionSnapshot, Velocity } from '@game/shared';
 import { Server } from 'http';
 import { GameLoop } from './game.loop';
-import { buildSnapshot } from './snapshot/snapshot.builder';
+import { buildConnectedDto, buildPositionSnapshot } from './dto/dto.builder';
 
 @WebSocketGateway({
   namespace: 'events',
@@ -26,8 +26,8 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit, OnGate
 
     if(this.loop.isStart === false) {
       this.loop.start(() => {
-        const snapshot = buildSnapshot(this.loop.world);
-        this.broadcastSnapshot(snapshot);
+        const snapshot = buildPositionSnapshot(this.loop.world);
+        this.broadcastData(EventSocket.PositionSnapshot, snapshot);
       });
     }
 
@@ -37,11 +37,14 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit, OnGate
     this.loop.world.addComponent(entity, Input, { up: false, down: false, left: false, right: false } );
 
     client.data.entity = entity;
+
+    this.broadcastData(EventSocket.Connected, buildConnectedDto(this.loop.world, entity));;
   }
 
   handleDisconnect(client: Socket) {
     console.log(`Client disconnected: ${client.id}`);
     this.loop.world.removeEntity(client.data.entity);
+    this.broadcastData(EventSocket.Disconnected, client.data.entity);
   }
 
   @SubscribeMessage(EventSocket.Input.toString())
@@ -50,8 +53,9 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit, OnGate
     @ConnectedSocket() client: Socket,
   ) {
     const input = this.loop.world.get(client.data.entity, Input);
-    if (!input) return;
 
+    if (!input) return;
+      
     input.up = data.up;
     input.down = data.down;
     input.left = data.left;
@@ -60,7 +64,7 @@ export class EventsGateway implements OnGatewayConnection, OnGatewayInit, OnGate
     input.jumpPressed = data.jumpPressed;
   }
 
-  broadcastSnapshot(snapshot: Snapshot) {
-    this.server.emit(EventSocket.Snapshot.toString(), snapshot);
+  broadcastData(event: EventSocket, data : any) {
+    this.server.emit(event.toString(), data);
   }
 }

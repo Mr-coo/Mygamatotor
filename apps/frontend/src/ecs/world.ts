@@ -1,8 +1,9 @@
 import type { Entity } from "@game/shared";
+import type { Component } from "@game/shared/dist/components/component";
 
 export class World {
   entities = new Set<Entity>();
-  components = new Map<string, Map<Entity, any>>();
+  components = new Map<string, Map<Entity, Component>>();
 
   createEntity(id: Entity): Entity {
     this.entities.add(id);
@@ -16,16 +17,19 @@ export class World {
     }
   }
 
-  addComponent<T>(entity: Entity, cls: new (...a: any[]) => T, component: T) {
-    const key = cls.name;
-    if (!this.components.has(key)) {
-      this.components.set(key, new Map());
+  addComponent<T extends Component>(entity: Entity, name: string, component: T) {
+    if (!this.components.has(name)) {
+      this.components.set(name, new Map());
     }
-    this.components.get(key)!.set(entity, component);
+    this.components.get(name)!.set(entity, component);
   }
 
-  get<T>(entity: Entity, cls: new (...a: any[]) => T): T | undefined {
-    return this.components.get(cls.name)?.get(entity);
+  get<T extends Component>(entity: Entity, cls: new (...a: any[]) => T): Component | undefined {
+    const value = this.components.get(cls.name);
+    if (!value) {
+      return undefined;
+    }
+    return value.get(entity);
   }
 
   query(...components: Function[]): Entity[] {

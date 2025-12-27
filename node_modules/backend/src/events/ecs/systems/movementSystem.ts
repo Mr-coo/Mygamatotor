@@ -8,5 +8,6 @@ export function movementSystem(world: World, deltaTime: number) {
 
         position.x += velocity.dx * deltaTime;
         position.y += velocity.dy * deltaTime;
+        console.log(`${e} in ${position.x} ${position.y} ${deltaTime}`)
     }
 }

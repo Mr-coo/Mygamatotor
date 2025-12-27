@@ -1,9 +1,9 @@
-import { Component, useEffect, useRef } from "react";
-import { bindKeyboard } from "../util/keyboardInputBind";
-import { EventSocket, Input, Position, Snapshot, Velocity, type Entity } from "@game/shared";
+import { useEffect, useRef } from "react";
 import { startGameLoop } from "../game/gameLoop";
 import { World } from "../ecs/world";
 import { networkClient } from "../network/client";
+import { EventSocket } from "@game/shared";
+import { onConnected, onDisconnected, onPositionSnapshot } from "../network/handle.event";
 
 export function GamePage() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -11,22 +11,16 @@ export function GamePage() {
   useEffect(() => {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext('2d')!;
+    ctx.fillStyle = `rgb(
+      ${Math.floor(Math.random() * 256)}, 
+      ${Math.floor(Math.random() * 256)}, 
+      ${Math.floor(Math.random() * 256)}
+    )`;
     const world = new World();
 
-    networkClient.on(EventSocket.Snapshot, (snapshot) => {
-      if(snapshot.components === undefined || snapshot.entities === undefined) {
-        return;
-      }
-      world.components = new Map<string, Map<Entity, Component>>(
-        Object.entries(snapshot.components).map(([name, obj]) => [
-          name,
-          new Map(Object.entries(obj as Record<Entity, Component>) as [Entity, Component][])
-        ])
-      );
-      world.entities = new Set(snapshot.entities);
-
-      bindKeyboard(world, networkClient.getClientId()??'');
-    });
+    networkClient.on(EventSocket.Connected, (data) => onConnected(world, data, networkClient.getClientId()!));
+    networkClient.on(EventSocket.PositionSnapshot, (data) => onPositionSnapshot(world, data));
+    networkClient.on(EventSocket.Disconnected, (data) => onDisconnected(world, data));
 
     startGameLoop(world, ctx, networkClient);
     

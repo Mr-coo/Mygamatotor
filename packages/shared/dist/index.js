@@ -4,4 +4,5 @@ export * from './components/input.js';
 export * from './entities/entity.js';
 export * from './protocols/inputCommand.js';
 export * from './enums/event.socket.js';
-export * from './snapshot/snapshot.js';
+export * from './dto/positionSnapshot.dto.js';
+export * from './dto/connected.dto.js';

@@ -10,17 +10,14 @@ export function startGameLoop(
   networkClient: NetworkClient
 ) {
   let last = performance.now();
-  let tick = 0;
 
   function loop(now: number) {
     const dt = (now - last) / 1000;
     last = now;
 
-    inputSystem(world, networkClient, tick);
+    inputSystem(world, networkClient, dt);
     movementSystem(world, dt);
     renderSystem(ctx, world);
-
-    tick++;
     
     requestAnimationFrame(loop);
   }

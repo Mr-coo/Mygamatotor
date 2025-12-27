@@ -7,7 +7,7 @@ import { World } from './ecs/world';
 @Injectable()
 export class GameLoop {
   isStart = false;
-  readonly TICK_RATE = 20;
+  readonly TICK_RATE = 1;
   readonly DT = 1 / this.TICK_RATE;
 
   world = new World();
