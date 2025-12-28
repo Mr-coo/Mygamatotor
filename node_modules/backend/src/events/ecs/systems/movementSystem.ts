@@ -7,7 +7,7 @@ export function movementSystem(world: World, deltaTime: number) {
         const size = world.get(e, Size) as Size;
         const velocity = world.get(e, Velocity) as Velocity;
 
-        const speed = 150;
+        const speed = 200;
 
         var magnitude = Math.sqrt(velocity.dx*velocity.dx + velocity.dy*velocity.dy);
 

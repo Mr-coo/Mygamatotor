@@ -1,4 +1,4 @@
-import { EventSocket, Input, Position, PositionSnapshot, Size, Sprite, Velocity, WORLD_HEIGHT, WORLD_WIDTH, type ConnectedDto, type Entity } from "@game/shared";
+import { EventSocket, Food, Input, Player, Position, PositionSnapshot, Size, SpeedPotion, Sprite, Velocity, WORLD_HEIGHT, WORLD_WIDTH, type ConnectedDto, type Entity } from "@game/shared";
 import type { World } from "./ecs/world";
 import { buildConnectedDto, buildPositionSnapshot, buildSingleEntityDto } from "./dto/dto.builder";
 import { Socket } from "socket.io";
@@ -21,6 +21,7 @@ export function onConnected(loop : GameLoop, client : Socket, broadCastData : (e
     loop.world.addComponent(entity, Input, { up: false, down: false, left: false, right: false } );
     loop.world.addComponent(entity, Size, { width: 100, height: 100 });
     loop.world.addComponent(entity, Sprite, { textureId: 'main.character' , flipX: false })
+    loop.world.addComponent(entity, Player, { })
 
     client.data.entity = entity;
 
@@ -42,16 +43,23 @@ export function onFoodCreated(world : World, broadCastData : (event: EventSocket
     world.addComponent(entity, Position, {x: posX, y: posY} as Position);
     world.addComponent(entity, Size, { width: 50, height:50 } as Size);
     world.addComponent(entity, Sprite, { textureId: 'food', flipX: false } as Sprite);
+    world.addComponent(entity, Food, {} as Food);
 
     const pos = world.get(entity, Position);
     const size = world.get(entity, Size);
     const sprite = world.get(entity, Sprite);
-    console.log('MAKLO', Position.constructor.name);
+    const food = world.get(entity, Food);
+ 
     const mappedComponent = new Map<string, Component>([
       ['Position', pos as Component],
       ['Size', size as Component],
-      ['Sprite', sprite as Component]
+      ['Sprite', sprite as Component],
+      ['SpeedPotion', food as Component]
     ]);
 
     broadCastData(EventSocket.FoodCreated, buildSingleEntityDto(entity, mappedComponent));
 }
+
+export function onFoodIntersect(world : World, broadCastData : (event: EventSocket, data : any) => void)[
+  
+]

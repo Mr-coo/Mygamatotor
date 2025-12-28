@@ -3,6 +3,8 @@ import { Entity } from "@game/shared";
 export class World {
   entities = new Set<Entity>();
   components = new Map<string, Map<Entity, any>>();
+  toRemove : Entity[] = [];
+  toAdd : Array<() => void> = [];
 
   createEntity(id : Entity): Entity {
     this.entities.add(id);

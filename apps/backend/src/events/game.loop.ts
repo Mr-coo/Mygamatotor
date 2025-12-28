@@ -9,7 +9,7 @@ import { EventSocket } from '@game/shared';
 @Injectable()
 export class GameLoop {
   isStart = false;
-  readonly TICK_RATE = 20;
+  readonly TICK_RATE = 30;
   readonly DT = 1 / this.TICK_RATE;
 
   world = new World();
