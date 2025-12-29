@@ -10,16 +10,20 @@ import { removeEntity } from './ecs/systems/removeEntity.System';
 
 @Injectable()
 export class GameLoop {
-  isStart = false;
+  private isStart = false;
   readonly TICK_RATE = 30;
   readonly DT = 1 / this.TICK_RATE;
 
   world = new World();
 
-  start(
-    onTick: () => void,
-    broadCastData: (event: EventSocket, data: any) => void,
-  ) {
+  start(broadCastData: (event: EventSocket, data: any) => void) {
+    if (this.isStart == false) {
+      this.run(broadCastData);
+      this.isStart = true;
+    }
+  }
+
+  private run(broadCastData: (event: EventSocket, data: any) => void) {
     setInterval(() => {
       inputSystem(this.world);
       movementSystem(this.world, this.DT);
@@ -28,8 +32,6 @@ export class GameLoop {
 
       addEntity(this.world, broadCastData);
       removeEntity(this.world, broadCastData);
-
-      onTick();
     }, 1000 / this.TICK_RATE);
   }
 }
