@@ -7,6 +7,7 @@ import { EventSocket } from '@game/shared';
 import { collusionSystem } from './ecs/systems/collusion.system';
 import { addEntity } from './ecs/systems/addEntity.system';
 import { removeEntity } from './ecs/systems/removeEntity.System';
+import { sendPosition } from './ecs/systems/sendPosition.system';
 
 @Injectable()
 export class GameLoop {
@@ -32,6 +33,7 @@ export class GameLoop {
 
       addEntity(this.world, broadCastData);
       removeEntity(this.world, broadCastData);
+      sendPosition(this.world, broadCastData);
     }, 1000 / this.TICK_RATE);
   }
 }

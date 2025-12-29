@@ -12,6 +12,7 @@ import { Component } from '@game/shared/dist/components/component';
 let number = 0;
 
 export function spawnFoodSystem(world: World) {
+  return;
   number++;
   if (number < 20) return;
 
@@ -19,10 +20,10 @@ export function spawnFoodSystem(world: World) {
   const posY = Math.floor(Math.random() * (WORLD_HEIGHT - 50));
 
   const newComp = new Map<string, Component>([
-    [Position.constructor.name, new Position(posX, posY)],
-    [Size.constructor.name, new Size(50, 50)],
-    [Sprite.constructor.name, new Sprite('food', false)],
-    [Food.constructor.name, new Food()],
+    [Position.name, new Position(posX, posY)],
+    [Size.name, new Size(50, 50)],
+    [Sprite.name, new Sprite('food', false)],
+    [Food.name, new Food()],
   ]);
 
   world.addToAdd(crypto.randomUUID(), newComp);

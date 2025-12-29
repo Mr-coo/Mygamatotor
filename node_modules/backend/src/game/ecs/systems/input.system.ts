@@ -6,7 +6,7 @@ export function inputSystem(world: World) {
     const input = world.get(e, Input) as Input;
     const velocity = world.get(e, Velocity) as Velocity;
 
-    const speed = 100;
+    const speed = 1;
 
     velocity.dx = (input.right ? speed : 0) - (input.left ? speed : 0);
     velocity.dy = (input.down ? speed : 0) - (input.up ? speed : 0);

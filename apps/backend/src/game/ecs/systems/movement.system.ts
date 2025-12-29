@@ -28,6 +28,7 @@ export function movementSystem(world: World, deltaTime: number) {
     const newY = position.y + velocity.dy * deltaTime * speed;
 
     if (newX >= 0 && newX < WORLD_WIDTH - size.width) position.x = newX;
+    else position.x = WORLD_WIDTH - size.width;
     if (newY >= 0 && newY < WORLD_HEIGHT - size.height) position.y = newY;
   }
 }
