@@ -11,4 +11,5 @@ export * from './entities/entity.js';
 export * from './enums/eventSocket.js';
 export * from './dto/posititon.dto.js';
 export * from './dto/createEntity.dto.js';
+export * from './dto/removeEntity.dto.js';
 export * from './const/const.js';

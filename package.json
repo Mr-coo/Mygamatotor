@@ -1,7 +1,11 @@
 {
   "private": true,
-  "workspaces": ["apps/*", "packages/*"],
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "devDependencies": {
+    "prisma": "^6.19.1",
     "typescript": "^5.9.3"
   }
 }

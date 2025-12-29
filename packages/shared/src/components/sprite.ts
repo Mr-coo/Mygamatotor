@@ -1,6 +1,12 @@
 import { Component } from "./component.js";
 
 export class Sprite extends Component {
-    textureId : String = 'dummpy.jpg';
-    flipX : Boolean = false;
+    textureId : string = 'dummpy.jpg';
+    flipX : boolean = false;
+
+    constructor(textureId : string, flipX : boolean){
+        super();
+        this.textureId = textureId;
+        this.flipX = flipX;
+    }
 }
