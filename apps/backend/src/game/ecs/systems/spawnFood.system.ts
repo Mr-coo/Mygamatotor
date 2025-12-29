@@ -12,7 +12,6 @@ import { Component } from '@game/shared/dist/components/component';
 let number = 0;
 
 export function spawnFoodSystem(world: World) {
-  return;
   number++;
   if (number < 20) return;
 
