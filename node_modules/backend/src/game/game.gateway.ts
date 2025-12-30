@@ -60,7 +60,7 @@ export class GameGateway
         record[name][entity] = comp;
       });
     });
-    console.log(EventSocket.CONNECTED.toString());
+
     this.server
       .to(client.id)
       .emit(
@@ -74,7 +74,7 @@ export class GameGateway
         [Position.name, new Position(0, 0)],
         [Velocity.name, new Velocity()],
         [Input.name, new Input()],
-        [Size.name, new Size(100, 100)],
+        [Size.name, new Size(150, 150)],
         [Sprite.name, new Sprite('main.character', false)],
         [Player.name, new Player()],
       ]),
@@ -84,7 +84,6 @@ export class GameGateway
   @SubscribeMessage(EventSocket.INPUT.toString())
   handleMessage(client: Socket, data: Input) {
     const input = this.loop.world.get(client.id, Input);
-    console.log(data);
     if (!input) return;
 
     Object.assign(input, data);

@@ -6,6 +6,8 @@ export function addEntity(
   world: World,
   broadCastData: (event: EventSocket, data: any) => void,
 ) {
+  if (world.toAdd.size == 0) return;
+
   const dto: Record<string, Record<Entity, Component>> = {};
   world.toAdd.forEach((value, key) => {
     world.entities.add(key);

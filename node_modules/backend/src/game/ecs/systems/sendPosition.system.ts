@@ -1,4 +1,10 @@
-import { Entity, EventSocket, Position, PositionDto } from '@game/shared';
+import {
+  Entity,
+  EventSocket,
+  Player,
+  Position,
+  PositionDto,
+} from '@game/shared';
 import { World } from '../world';
 
 export function sendPosition(
@@ -7,7 +13,7 @@ export function sendPosition(
 ) {
   const record: Record<Entity, Position> = {};
 
-  for (const e of world.query(Position)) {
+  for (const e of world.query(Position, Player)) {
     const pos = world.get(e, Position)!;
     record[e] = pos;
   }

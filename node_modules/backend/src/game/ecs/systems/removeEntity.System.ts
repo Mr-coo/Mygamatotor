@@ -5,6 +5,8 @@ export function removeEntity(
   world: World,
   broadCastData: (event: EventSocket, data: any) => void,
 ) {
+  if (world.toRemove.size == 0) return;
+
   world.toRemove.forEach((entity) => {
     world.entities.delete(entity);
     for (const map of world.components.values()) {
@@ -14,7 +16,6 @@ export function removeEntity(
 
   const entities: string[] = Array.from(world.toRemove);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   broadCastData(EventSocket.REMOVE_ENTITY, new RemoveEntityDto(entities));
 
   world.toRemove.clear();
