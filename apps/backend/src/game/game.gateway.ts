@@ -8,6 +8,8 @@ import {
 } from '@nestjs/websockets';
 import { Socket } from 'socket.io';
 import {
+  CreateEntityDto,
+  Entity,
   EventSocket,
   Input,
   Player,
@@ -17,7 +19,7 @@ import {
   Velocity,
 } from '@game/shared';
 import { GameLoop } from './gameLoop.service';
-import { Server } from 'http';
+import { Server } from 'socket.io';
 import { Component } from '@game/shared/dist/components/component';
 
 @WebSocketGateway({
@@ -49,6 +51,22 @@ export class GameGateway
     this.loop.start((event: EventSocket, data: any) => {
       this.server.emit(event.toString(), data);
     });
+
+    const record: Record<string, Record<Entity, Component>> = {};
+
+    this.loop.world.components.forEach((map, name) => {
+      record[name] = {};
+      map.forEach((comp, entity) => {
+        record[name][entity] = comp;
+      });
+    });
+    console.log(EventSocket.CONNECTED.toString());
+    this.server
+      .to(client.id)
+      .emit(
+        EventSocket.CONNECTED.toString(),
+        new CreateEntityDto([...this.loop.world.entities], record),
+      );
 
     this.loop.world.addToAdd(
       client.id,

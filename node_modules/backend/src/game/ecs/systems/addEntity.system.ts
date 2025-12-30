@@ -11,7 +11,6 @@ export function addEntity(
     world.entities.add(key);
     value.forEach((comp, name) => {
       world.addComponent(key, name, comp);
-      console.log(key, name, comp);
       dto[name] = { key, comp };
     });
   });
