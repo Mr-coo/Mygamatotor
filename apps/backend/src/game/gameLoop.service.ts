@@ -8,11 +8,12 @@ import { collusionSystem } from './ecs/systems/collusion.system';
 import { addEntity } from './ecs/systems/addEntity.system';
 import { removeEntity } from './ecs/systems/removeEntity.System';
 import { sendPosition } from './ecs/systems/sendPosition.system';
+import { sendScore } from './ecs/systems/sendScore.system';
 
 @Injectable()
 export class GameLoop {
   private isStart = false;
-  readonly TICK_RATE = 30;
+  readonly TICK_RATE = 20;
   readonly DT = 1 / this.TICK_RATE;
 
   world = new World();
@@ -34,6 +35,7 @@ export class GameLoop {
       addEntity(this.world, broadCastData);
       removeEntity(this.world, broadCastData);
       sendPosition(this.world, broadCastData);
+      sendScore(this.world, broadCastData);
     }, 1000 / this.TICK_RATE);
   }
 }

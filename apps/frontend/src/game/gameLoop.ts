@@ -2,8 +2,8 @@ import { addEntity } from "../ecs/systems/addEntity.system";
 import { inputSystem } from "../ecs/systems/input.system";
 import { removeEntity } from "../ecs/systems/removeEntity.system";
 import { renderSystem } from "../ecs/systems/render.system";
+import { syncToUI } from "../ecs/systems/syncToUI.system";
 import type { World } from "../ecs/world";
-import type { networkClient } from "../network/networkClient";
 
 export function startGameLoop(
   world: World,
@@ -20,6 +20,7 @@ export function startGameLoop(
 
     addEntity(world);
     removeEntity(world);
+    syncToUI(world);
     
     requestAnimationFrame(loop);
   }

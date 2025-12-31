@@ -14,6 +14,7 @@ import {
   Input,
   Player,
   Position,
+  Score,
   Size,
   Sprite,
   Velocity,
@@ -77,6 +78,7 @@ export class GameGateway
         [Size.name, new Size(150, 150)],
         [Sprite.name, new Sprite('main.character', false)],
         [Player.name, new Player()],
+        [Score.name, new Score()],
       ]),
     );
   }

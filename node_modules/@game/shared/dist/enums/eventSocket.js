@@ -6,4 +6,5 @@ export var EventSocket;
     EventSocket[EventSocket["DISCONNECTED"] = 3] = "DISCONNECTED";
     EventSocket[EventSocket["CREATE_ENTITY"] = 4] = "CREATE_ENTITY";
     EventSocket[EventSocket["REMOVE_ENTITY"] = 5] = "REMOVE_ENTITY";
+    EventSocket[EventSocket["SCORE"] = 6] = "SCORE";
 })(EventSocket || (EventSocket = {}));

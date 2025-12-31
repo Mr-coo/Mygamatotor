@@ -1,8 +1,6 @@
-import { Position, Sprite, type Entity, CreateEntityDto, RemoveEntityDto, PositionDto } from "@game/shared";
+import { Position, Sprite, type Entity, CreateEntityDto, RemoveEntityDto, PositionDto, ScoreDto, Score } from "@game/shared";
 import type { World } from "../ecs/world";
-import { bindKeyboard } from "../util/keyboardbind";
 import type { Component } from "@game/shared/dist/components/component";
-import { networkClient } from "./networkClient";
 
 export function onConnected(world : World, dto: CreateEntityDto) {
 
@@ -48,5 +46,13 @@ export function onPosition(world : World, dto: PositionDto) {
             posComp.x = position.x;
             posComp.y = position.y;
         }
+    });
+}
+
+export function onScore(world: World, dto : ScoreDto){
+    Object.entries(dto.scores).forEach(([entity, score]) => {
+        const scoreComp = world.get(entity, Score);
+   
+        if(scoreComp) scoreComp.value = score.value;
     });
 }

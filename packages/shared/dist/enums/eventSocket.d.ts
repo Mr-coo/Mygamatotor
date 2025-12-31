@@ -4,5 +4,6 @@ export declare enum EventSocket {
     CONNECTED = 2,
     DISCONNECTED = 3,
     CREATE_ENTITY = 4,
-    REMOVE_ENTITY = 5
+    REMOVE_ENTITY = 5,
+    SCORE = 6
 }

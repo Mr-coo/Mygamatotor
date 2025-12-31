@@ -1,4 +1,4 @@
-import { Food, Player, Position, Size } from '@game/shared';
+import { Food, Player, Position, Score, Size } from '@game/shared';
 import { World } from '../world';
 
 export function collusionSystem(world: World) {
@@ -18,6 +18,8 @@ export function collusionSystem(world: World) {
 
       if (isIntersect) {
         world.addToRemove(f);
+        const score = world.get(e, Score);
+        if (score) score.value += 5;
       }
     }
   }
