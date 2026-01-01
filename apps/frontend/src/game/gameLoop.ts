@@ -15,7 +15,6 @@ export function startGameLoop(
     const dt = (now - last) / 1000;
     last = now;
 
-    inputSystem(world, dt);
     renderSystem(ctx, world, dt);
 
     addEntity(world);
@@ -24,6 +23,10 @@ export function startGameLoop(
     
     requestAnimationFrame(loop);
   }
+
+  setInterval(()=>{
+    inputSystem(world, 100);
+  }, 50);
 
   requestAnimationFrame(loop);
 }

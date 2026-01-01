@@ -1,5 +1,5 @@
 // ecs/sync.ts
-import { Player, Score, type Entity } from "@game/shared";
+import { Player, Score, } from "@game/shared";
 import { useGameStore } from "../../store/game.store";
 import type { World } from "../world";
 
