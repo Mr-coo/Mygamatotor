@@ -1,7 +1,8 @@
 import { GamePage } from "./pages/GamePage"
+import { HomePage } from "./pages/HomePage"
 
 function App() {
-  return GamePage();
+  return HomePage();
 }
 
 export default App
