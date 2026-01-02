@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import sky from '../assets/splash-screen/sky.png'
 import { TiltCard } from '../component/TiltCard'
 import { UpDownAnimation } from '../component/UpAndDown'
@@ -15,7 +14,6 @@ import background from '../assets/backgrounds/blue-checkered.jpg';
 import { ArrowDown, ArrowUp } from 'lucide-react'
 
 export function HomePage(){
-  const [isHovered, setIsHovered] = useState(false);
   const logoSection = (
     <UpDownAnimation content={
         <>

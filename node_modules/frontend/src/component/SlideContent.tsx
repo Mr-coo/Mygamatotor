@@ -7,7 +7,7 @@ export function SlideContent({ contents } : { contents : React.ReactNode[] }) {
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       if (animating) return;
-      if (Math.abs(e.deltaY) < 20) return;
+      if (Math.abs(e.deltaY) < 50) return;
 
       setAnimating(true);
 
