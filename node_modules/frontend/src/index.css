@@ -1,6 +1,38 @@
 @import "tailwindcss";
 
+*{
+  font-family: 'Dongle-Regular', sans-serif;
+}
+
 @keyframes upAndDown {
   0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-40px); }
+  50% { transform: translateY(-20px); }
+}
+
+@font-face{
+  font-family: 'Dongle-Regular';
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  src: url('./assets/font/Dongle-Regular.ttf') format('truetype');
+}
+
+h1{
+  @apply text-8xl font-extrabold text-shadow-lg
+}
+
+h2{
+  @apply text-5xl font-bold text-shadow-lg
+}
+
+h3{
+  @apply text-4xl font-medium text-shadow-lg
+}
+
+h4, label{
+  @apply text-3xl text-shadow-lg
+}
+
+p{
+  @apply text-2xl
 }
