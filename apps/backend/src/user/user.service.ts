@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -39,22 +39,33 @@ export class UserService {
     });
   }
 
-  update(id: string, updateUserDto: UpdateUserDto) {
-    return this.prisma.user.update({
-      where: {
-        id: id,
-      },
-      data: {
-        username: updateUserDto.username,
-      },
-    });
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try {
+      return await this.prisma.user.update({
+        where: {
+          id: id,
+        },
+        data: {
+          username: updateUserDto.username,
+        },
+      });
+    } catch (error) {
+      if(error.code == 'P2025') throw new NotFoundException();
+      return error;
+    }
   }
 
-  remove(id: string) {
-    return this.prisma.user.delete({
-      where: {
-        id: id,
-      }
-    })
+  async remove(id: string) {
+    try {
+      return await this.prisma.user.delete({
+        where: {
+          id: id,
+        }
+      })
+    } catch (error) {
+      console.log(error);
+      if(error.code == 'P2025') throw new NotFoundException();
+      return error;
+    }
   }
 }

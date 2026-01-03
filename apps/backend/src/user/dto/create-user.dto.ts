@@ -1,9 +1,11 @@
-import { IsNotEmpty, IsString, Matches, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString, Matches, MinLength, Validate } from 'class-validator';
+import { IsUsernameUnique } from '../validator/is-username-unique.validator';
 
 export class CreateUserDto {
   @IsString()
   @MinLength(3)
   @IsNotEmpty()
+  @Validate(IsUsernameUnique)
   username: string;
 
   @IsString()
