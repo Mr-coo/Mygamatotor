@@ -1,4 +1,4 @@
-import { networkClient } from "../../network/networkClient";
+import { networkClient } from "../../network/socket/networkClient";
 import { EventSocket, Input } from "@game/shared/";
 import type { World } from "../world";
 

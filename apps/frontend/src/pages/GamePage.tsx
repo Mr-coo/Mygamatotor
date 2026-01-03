@@ -1,9 +1,9 @@
 import { useEffect, useRef } from "react";
 import { startGameLoop } from "../game/gameLoop";
 import { World } from "../ecs/world";
-import { networkClient } from "../network/networkClient";
+import { networkClient } from "../network/socket/networkClient";
 import { EventSocket, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
-import { onConnected, onRemoveEntity, onCreateEntity, onPosition, onScore } from "../network/eventHandle";
+import { onConnected, onRemoveEntity, onCreateEntity, onPosition, onScore } from "../network/socket/eventHandle";
 import { useGameStore } from "../store/game.store"; 
 import wave from "../assets/wave.png"
 

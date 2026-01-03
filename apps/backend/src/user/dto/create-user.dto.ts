@@ -1,5 +1,6 @@
 import { IsNotEmpty, IsString, Matches, MinLength, Validate } from 'class-validator';
 import { IsUsernameUnique } from '../validator/is-username-unique.validator';
+import { ConfirmEqualPassword } from '../validator/confirm-equal-password.validator';
 
 export class CreateUserDto {
   @IsString()
@@ -13,4 +14,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @Matches(/\d/, { message: 'The field must contain at least one number' })
   password: string;
+
+  @Validate(ConfirmEqualPassword)
+  confirm: string;
 }

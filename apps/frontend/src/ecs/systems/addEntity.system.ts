@@ -1,5 +1,5 @@
 import { World } from '../world';
-import { networkClient } from '../../network/networkClient';
+import { networkClient } from '../../network/socket/networkClient';
 import { bindKeyboard } from '../../util/keyboardbind';
 
 export function addEntity(

@@ -12,8 +12,49 @@ import logo from '../assets/logo.png'
 import { SlideContent } from '../component/SlideContent'
 import background from '../assets/backgrounds/blue-checkered.jpg';
 import { ArrowDown, ArrowUp } from 'lucide-react'
+import { AuthService } from '../network/axios/services/auth.service'
+import React, { useState } from 'react'
+import { UserService } from '../network/axios/services/user.service'
 
 export function HomePage(){
+  const [loginData, setLoginData] = useState({
+    'username': '',
+    'password': '',
+  });
+
+  const [registerData, setRegisterData] = useState({
+    'username': '',
+    'password': '',
+    'confirm': ''
+  });
+
+  function handleLogin(event: React.ChangeEvent<HTMLInputElement>){
+    const { name, value } = event.target; 
+    setLoginData(prevFormData => ({
+      ...prevFormData, 
+      [name]: value
+    }));
+  }
+
+  function handleRegister(event: React.ChangeEvent<HTMLInputElement>){
+    const { name, value } = event.target; 
+    setRegisterData(prevFormData => ({
+      ...prevFormData, 
+      [name]: value
+    }));
+  }
+
+  async function submitLogin(event : React.FormEvent<HTMLFormElement>){
+    event.preventDefault();
+    const data = await AuthService.login(loginData.username, loginData.password);
+  }
+
+  async function submitRegister(event : React.FormEvent<HTMLFormElement>){
+    event.preventDefault();
+    const data = await UserService.create(registerData.username, registerData.password, registerData.confirm);
+    console.log(data);
+  }
+  
   const logoSection = (
     <UpDownAnimation content={
         <>
@@ -29,14 +70,14 @@ export function HomePage(){
       <div className='w-full h-full absolute rounded-2xl border-2 border-white/40'></div>
       <div className='w-full absolute p-5'>
         <h1 className='text-white'>Login</h1>
-        <form action="" className='flex flex-col justify-between items-center text-2xl'>
+        <form action="" className='flex flex-col justify-between items-center text-2xl' onSubmit={submitLogin}>
           <div className='w-3/4 flex justify-between items-start flex-col pb-2'>
             <label htmlFor="" className='text-white'>username</label>
-            <input type="text" className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black'/>
+            <input type="text" name='username' className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black' value={loginData.username} onChange={handleLogin}/>
           </div>
           <div className='w-3/4 flex justify-between items-start flex-col pb-8'>
             <label htmlFor="" className='text-white'>password</label>
-            <input type="password" className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black'/>
+            <input type="password" name='password' className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black' value={loginData.password} onChange={handleLogin}/>
           </div>
           <button className='bg-white w-3/4 rounded-2xl text-3xl shadow-2xs border-2 text-black transition-all duration-100 border-black hover:bg-white/20'>Login</button>
         </form>
@@ -58,18 +99,18 @@ export function HomePage(){
       <div className='w-full h-full absolute rounded-2xl border-2 border-white/40'></div>
       <div className='w-full absolute pt-3'>
         <h1 className='text-white'>Register</h1>
-        <form action="" className='flex flex-col justify-between items-center text-2xl'>
+        <form action="" className='flex flex-col justify-between items-center text-2xl' onSubmit={submitRegister}>
           <div className='w-3/4 flex justify-between items-start flex-col pb-2'>
             <label htmlFor="" className='text-white'>username</label>
-            <input type="text" className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black'/>
+            <input type="text" name='username' className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black' value={registerData.username} onChange={handleRegister}/>
           </div>
           <div className='w-3/4 flex justify-between items-start flex-col pb-2'>
             <label htmlFor="" className='text-white'>password</label>
-            <input type="password" className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black'/>
+            <input type="password" name='password' className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black' value={registerData.password} onChange={handleRegister}/>
           </div>
           <div className='w-3/4 flex justify-between items-start flex-col pb-8'>
             <label htmlFor="" className='text-white'>confirm password</label>
-            <input type="password" className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black'/>
+            <input type="password" name='confirm' className='bg-white w-full rounded-2xl p-2 pl-4 pr-4 text-3xl shadow-2xs border-2 border-black' value={registerData.confirm} onChange={handleRegister}/>
           </div>
           <button className='bg-white w-3/4 rounded-2xl text-3xl shadow-2xs border-2 text-black transition-all duration-100 border-black hover:bg-white/20'>Register</button>
         </form>

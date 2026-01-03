@@ -1,5 +1,5 @@
 import { Position, Sprite, type Entity, CreateEntityDto, RemoveEntityDto, PositionDto, ScoreDto, Score } from "@game/shared";
-import type { World } from "../ecs/world";
+import type { World } from "../../ecs/world";
 import type { Component } from "@game/shared/dist/components/component";
 
 export function onConnected(world : World, dto: CreateEntityDto) {
