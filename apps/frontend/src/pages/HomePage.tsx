@@ -15,8 +15,10 @@ import { ArrowDown, ArrowUp } from 'lucide-react'
 import { AuthService } from '../network/axios/services/auth.service'
 import React, { useState } from 'react'
 import { UserService } from '../network/axios/services/user.service'
+import { useNavigate } from 'react-router-dom'
 
 export function HomePage(){
+  const navigate = useNavigate();
   const [loginData, setLoginData] = useState({
     'username': '',
     'password': '',
@@ -46,13 +48,18 @@ export function HomePage(){
 
   async function submitLogin(event : React.FormEvent<HTMLFormElement>){
     event.preventDefault();
-    const data = await AuthService.login(loginData.username, loginData.password);
+    try {
+      const data = await AuthService.login(loginData.username, loginData.password);
+      localStorage.setItem("access_token_mygamatoto", data.access_token);
+      navigate('/game');
+    } catch (error) {
+      
+    }
   }
 
-  async function submitRegister(event : React.FormEvent<HTMLFormElement>){
+  function submitRegister(event : React.FormEvent<HTMLFormElement>){
     event.preventDefault();
-    const data = await UserService.create(registerData.username, registerData.password, registerData.confirm);
-    console.log(data);
+    UserService.create(registerData.username, registerData.password, registerData.confirm);
   }
   
   const logoSection = (

@@ -7,7 +7,7 @@ export const http = axios.create({
 });
 
 http.interceptors.request.use((config) => {
-  const token = localStorage.getItem("access_token");
+  const token = localStorage.getItem("access_token_mygamatoto");
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
