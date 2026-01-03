@@ -13,7 +13,7 @@ import { sendScore } from './ecs/systems/sendScore.system';
 @Injectable()
 export class GameLoop {
   private isStart = false;
-  readonly TICK_RATE = 20;
+  readonly TICK_RATE = 60;
   readonly DT = 1 / this.TICK_RATE;
 
   world = new World();
