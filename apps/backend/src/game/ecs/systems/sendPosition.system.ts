@@ -1,4 +1,5 @@
 import {
+  Ball,
   Entity,
   EventSocket,
   Player,
@@ -14,6 +15,11 @@ export function sendPosition(
   const record: Record<Entity, Position> = {};
 
   for (const e of world.query(Position, Player)) {
+    const pos = world.get(e, Position)!;
+    record[e] = pos;
+  }
+  
+  for (const e of world.query(Position, Ball)) {
     const pos = world.get(e, Position)!;
     record[e] = pos;
   }

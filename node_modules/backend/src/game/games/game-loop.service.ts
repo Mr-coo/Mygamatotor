@@ -1,6 +1,9 @@
-import { EventSocket } from "@game/shared";
+import { EventSocket, Input, MovementConstraint, Player, Position, Score, Size, Sprite, Velocity, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
 import { World } from "../ecs/world";
 import { Server } from "socket.io";
+import { FightOverFood } from "./fight-over-food.service";
+import { Component } from "@game/shared/dist/components/component";
+import { PongPongPong } from "./pong-pong-pong.service";
 
 export abstract class GameLoop {
   readonly TICK_RATE = 60;
@@ -27,11 +30,13 @@ export abstract class GameLoop {
     this.server.to(this.roomId).emit(event.toString(), data);
   }
 
-  incPlayer(){
+  protected incPlayer(){
     this.playerCount++;
   }
 
-  decPlayer(){
+  protected decPlayer(){
     this.playerCount--;
   }
+
+  abstract addPlayer(clientId: string);
 }

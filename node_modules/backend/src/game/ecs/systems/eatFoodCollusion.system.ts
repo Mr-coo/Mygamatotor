@@ -1,7 +1,7 @@
 import { Food, Player, Position, Score, Size } from '@game/shared';
 import { World } from '../world';
 
-export function collusionSystem(world: World) {
+export function EatFoodCollusionSystem(world: World) {
   for (const e of world.query(Player)) {
     const p1 = world.get(e, Position) as Position;
     const s1 = world.get(e, Size) as Size;

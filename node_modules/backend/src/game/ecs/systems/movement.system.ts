@@ -1,4 +1,5 @@
 import {
+  Ball,
   Position,
   Size,
   Velocity,
@@ -13,7 +14,7 @@ export function movementSystem(world: World, deltaTime: number) {
     const size = world.get(e, Size) as Size;
     const velocity = world.get(e, Velocity) as Velocity;
 
-    const speed = 800;
+    const speed = velocity.base;
 
     const magnitude = Math.sqrt(
       velocity.dx * velocity.dx + velocity.dy * velocity.dy,
@@ -27,9 +28,15 @@ export function movementSystem(world: World, deltaTime: number) {
     const newX = position.x + velocity.dx * deltaTime * speed;
     const newY = position.y + velocity.dy * deltaTime * speed;
 
-    if (newX >= 0 && newX <= WORLD_WIDTH - size.width) position.x = newX;
-    else position.x = WORLD_WIDTH - size.width;
-    if (newY >= 0 && newY <= WORLD_HEIGHT - size.height) position.y = newY;
-    else position.y = WORLD_HEIGHT - size.height;
+    position.x = newX;
+    if(position.x <= 0) position.x = 0;
+    else if(position.x >= WORLD_WIDTH-size.width) position.x = WORLD_WIDTH-size.width;
+
+    position.y = newY;
+    if (newY <= 0) position.y = 0;
+    else if(newY >= WORLD_HEIGHT-size.height) position.y = WORLD_HEIGHT-size.height;
+
+    // if(world.get(e, Ball) != null)
+      // console.log(e, 'pos y ball', position.y);
   }
 }

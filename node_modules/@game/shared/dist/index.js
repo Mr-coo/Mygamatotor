@@ -5,6 +5,7 @@ export * from './components/input.js';
 export * from './components/size.js';
 export * from './components/sprite.js';
 export * from './components/food.js';
+export * from './components/ball.js';
 export * from './components/player.js';
 export * from './components/score.js';
 export * from './components/healthPotion.js';

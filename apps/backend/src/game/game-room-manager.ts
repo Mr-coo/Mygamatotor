@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { GameLoop } from "./games/game-loop.service";
-import { EventSocket, GameName, Input, Player, Position, Score, Size, Sprite, Velocity } from "@game/shared";
+import { EventSocket, GameName, Input, MovementConstraint, Player, Position, Score, Size, Sprite, Velocity, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
 import { FightOverFood } from "./games/fight-over-food.service";
 import { Component } from "@game/shared/dist/components/component";
 import { Server, Socket } from "socket.io";
@@ -16,7 +16,7 @@ export class GameRoomManager {
     let loop : GameLoop;
     switch (type) {
       case GameName.FIGHT_OVER_FOOD: loop = new FightOverFood(server, roomId);break;
-      // case GameName.FIGHT_OVER_FOOD:
+      case GameName.PONG_PONG_PONG: loop = new PongPongPong(server, roomId);break;
       default: loop = new FightOverFood(server, roomId);break;
     }
 
@@ -49,40 +49,13 @@ export class GameRoomManager {
       if(room == roomId) clientList.push(client);
     })
     clientList.forEach((c) => this.clients.delete(c));
-
-    this.rooms.get(roomId)?.decPlayer();
   }
 
   addClient(client: Socket, type: GameName, server: Server){
     if(this.clients.get(client.id) != undefined) return;
 
     let gameLoop : GameLoop | null = null;
-    let playerData : Map<string, Component>;
-
-    if(type == GameName.FIGHT_OVER_FOOD){
-      playerData = new Map<string, Component>([
-          [Position.name, new Position(0, 0)],
-          [Velocity.name, new Velocity()],
-          [Input.name, new Input()],
-          [Size.name, new Size(150, 150)],
-          [Sprite.name, new Sprite('wendy', false)],
-          [Player.name, new Player()],
-          [Score.name, new Score()],
-        ]);
-    }
-    else if(type == GameName.PONG_PONG_PONG){
-      playerData = new Map<string, Component>([
-        [Position.name, new Position(0, 0)],
-        [Velocity.name, new Velocity()],
-        [Input.name, new Input()],
-        [Size.name, new Size(150, 150)],
-        [Sprite.name, new Sprite('tang', false)],
-        [Player.name, new Player()],
-        [Score.name, new Score()],
-      ]);
-    }
-    else return;
-
+    
     this.rooms.forEach((loop, roomId) => {
       if(loop instanceof FightOverFood && type == GameName.FIGHT_OVER_FOOD && loop.isValidToJoin()){
         gameLoop = loop;
@@ -97,8 +70,7 @@ export class GameRoomManager {
     client.join(gameLoop.roomId);
     this.clients.set(client.id, gameLoop.roomId);
 
-    gameLoop.incPlayer();
-    gameLoop.world.addToAdd(client.id,playerData);
+    gameLoop.addPlayer(client.id);
     gameLoop.start();
   }
 }
