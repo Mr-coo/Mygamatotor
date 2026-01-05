@@ -4,7 +4,7 @@ import type { World } from "../ecs/world";
 export function bindKeyboard(world: World, player: Entity) {
   window.addEventListener('keydown', e => {
     const input = world.get(player, Input) as Input;
-    if (!input) return;
+    if (!input) {console.log('input not found');return;}
 
     if (e.key === 'w') {
       console.log('DOWN W');

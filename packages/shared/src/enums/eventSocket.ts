@@ -6,4 +6,5 @@ export enum EventSocket {
     CREATE_ENTITY,
     REMOVE_ENTITY,
     SCORE,
+    JOIN
 }

@@ -1,58 +1,58 @@
 import { Position, Sprite, type Entity, CreateEntityDto, RemoveEntityDto, PositionDto, ScoreDto, Score } from "@game/shared";
-import type { World } from "../../ecs/world";
+import { World } from "../../ecs/world";
 import type { Component } from "@game/shared/dist/components/component";
+import { bindKeyboard } from "../../util/keyboardbind";
+import { networkClient } from "./networkClient";
 
-export function onConnected(world : World, dto: CreateEntityDto) {
+export const EventHandle = {
+    onConnected(world: World, dto: boolean) {
+        bindKeyboard(world, networkClient.getClientId()!);
+    },
 
-    world.components = new Map<string, Map<Entity, Component>>(
-        Object.entries(dto.components).map(([name, obj]) => [
-            name,
-            new Map(Object.entries(obj as Record<Entity, Component>) as [Entity, Component][])
-        ])
-    );
-    world.entities = new Set(dto.entities);
-}
+    onRemoveEntity(world : World, dto: RemoveEntityDto) {
+        dto.entities.forEach((e) => {
+            world.addToRemove(e);
+        })
+    },
 
-export function onRemoveEntity(world : World, dto: RemoveEntityDto) {
-    dto.entities.forEach((e) => {
-        world.addToRemove(e);
-    })
-}
+    onCreateEntity(world : World, dto : CreateEntityDto){
+        console.log(dto);
+        const result = new Map<Entity, Map<string, Component>>();
 
-export function onCreateEntity(world : World, dto : CreateEntityDto){
-    const result = new Map<Entity, Map<string, Component>>();
+        for (const [className, entries] of Object.entries(dto.components)) {
+            for (const [ key, comp ] of Object.entries(entries)) {
+                let compMap = result.get(key);
 
-    for (const [className, { key, comp }] of Object.entries(dto.components)) {
-        let compMap = result.get(key);
+                if (!compMap) {
+                compMap = new Map<string, Component>();
+                result.set(key, compMap);
+                }
 
-        if (!compMap) {
-            compMap = new Map<string, Component>();
-            result.set(key, compMap);
+                compMap.set(className, comp);
+            }
         }
 
-        compMap.set(className, comp);
-    }
+        result.forEach((components, entity) => {
+            world.addToAdd(entity, components);
+        });
+    },
+
+    onPosition(world : World, dto: PositionDto) {
+        Object.entries(dto.positions).forEach(([entity, position]) => {
+            const posComp = world.get(entity, Position) as Position;
+
+            if (posComp) {
+                posComp.x = position.x;
+                posComp.y = position.y;
+            }
+        });
+    },
+
+    onScore(world: World, dto : ScoreDto){
+        Object.entries(dto.scores).forEach(([entity, score]) => {
+            const scoreComp = world.get(entity, Score);
     
-    result.forEach((value, key) => {
-        world.addToAdd(key, value);
-    })
-}
-
-export function onPosition(world : World, dto: PositionDto) {
-    Object.entries(dto.positions).forEach(([entity, position]) => {
-        const posComp = world.get(entity, Position) as Position;
-
-        if (posComp) {
-            posComp.x = position.x;
-            posComp.y = position.y;
-        }
-    });
-}
-
-export function onScore(world: World, dto : ScoreDto){
-    Object.entries(dto.scores).forEach(([entity, score]) => {
-        const scoreComp = world.get(entity, Score);
-   
-        if(scoreComp) scoreComp.value = score.value;
-    });
+            if(scoreComp) scoreComp.value = score.value;
+        });
+    },
 }

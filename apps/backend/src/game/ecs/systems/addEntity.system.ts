@@ -9,14 +9,21 @@ export function addEntity(
   if (world.toAdd.size == 0) return;
 
   const dto: Record<string, Record<Entity, Component>> = {};
+
   world.toAdd.forEach((value, key) => {
     world.entities.add(key);
+
     value.forEach((comp, name) => {
       world.addComponent(key, name, comp);
-      dto[name] = { key, comp };
+
+      if (!dto[name]) {
+        dto[name] = {};
+      }
+
+      dto[name][key] = comp;
     });
   });
-
+  
   broadCastData(
     EventSocket.CREATE_ENTITY,
     new CreateEntityDto([...world.toAdd.keys()], dto),

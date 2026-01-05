@@ -9,10 +9,6 @@ export function addEntity(
     world.entities.add(key);
     value.forEach((comp, name) => {
       world.addComponent(key, name, comp);
-
-      if(key == networkClient.getClientId()){
-        bindKeyboard(world, key);
-      }
     });
   });
 

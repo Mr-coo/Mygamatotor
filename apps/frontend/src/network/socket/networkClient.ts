@@ -6,7 +6,7 @@ class NetworkClient {
 
     constructor() {
         console.trace("Connecting to server...");
-        this.socket = io('http://localhost:3000/game', {
+        this.socket = io('http://10.20.181.83:3000/game', {
             autoConnect: false,
         });
     }

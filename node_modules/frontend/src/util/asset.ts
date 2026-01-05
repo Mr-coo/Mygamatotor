@@ -1,10 +1,12 @@
 import Background from '../assets/backgrounds/blue-tile.jpg'
-import MainCharacter from '../assets/splash-screen/wendy.png'
+import Wendy from '../assets/splash-screen/wendy.png'
+import Tang from '../assets/cats/taNG_cat.png'
 import Food from '../assets/cat-print.png'
 
 const textures : Map<string, string> = new Map([
     ['background', Background],
-    ['main.character', MainCharacter],
+    ['wendy', Wendy],
+    ['tang', Tang],
     ['food', Food]
 ])
 
