@@ -17,7 +17,7 @@ export function GamePage() {
     const ctx = canvas.getContext('2d')!;
     const world = new World();
     networkClient.connect();
-    networkClient.sendCommand(EventSocket.JOIN, GameName.PONG_PONG_PONG);
+    networkClient.sendCommand(EventSocket.JOIN, GameName.FIGHT_OVER_FOOD);
 
     networkClient.on(EventSocket.CONNECTED, (data) => {EventHandle.onConnected(world, data);setIsStart(true);});
     networkClient.on(EventSocket.POSITION, (data) => EventHandle.onPosition(world, data));

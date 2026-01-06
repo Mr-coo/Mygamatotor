@@ -13,6 +13,8 @@ import {
 } from '@game/shared';
 import { Server, Socket } from 'socket.io';
 import { GameRoomManager } from './game-room-manager';
+import { JwtStrategtService } from 'src/auth/jwt-strategy.service';
+import { socketJwtMiddleware } from 'src/auth/jwt-socket.middleware';
 
 @WebSocketGateway({
   namespace: 'game',
@@ -26,9 +28,10 @@ export class GameGateway
   @WebSocketServer()
   server: Server;
 
-  constructor(private readonly rooms: GameRoomManager) {}
+  constructor(private readonly rooms: GameRoomManager, private jwtStrategy: JwtStrategtService) {}
 
   afterInit() {
+    this.server.use(socketJwtMiddleware(this.jwtStrategy));
     console.log('websockets Initialize');
   }
 
