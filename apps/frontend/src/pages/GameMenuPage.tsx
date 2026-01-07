@@ -1,4 +1,4 @@
-import { act, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Cloud from "../assets/wave.png";
 import Logo from "../assets/logo.png";
 import { CircleUserRound } from 'lucide-react'

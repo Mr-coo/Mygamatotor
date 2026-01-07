@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { startGameLoop } from "../game/gameLoop";
 import { World } from "../ecs/world";
 import { networkClient } from "../network/socket/networkClient";
-import { EventSocket, GameName, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
+import { EventSocket, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
 import { useGameStore } from "../store/game.store"; 
 import wave from "../assets/wave.png"
 import { EventHandle } from "../network/socket/eventHandle";
