@@ -6,10 +6,7 @@ export function bindKeyboard(world: World, player: Entity) {
     const input = world.get(player, Input) as Input;
     if (!input) {console.log('input not found');return;}
 
-    if (e.key === 'w') {
-      console.log('DOWN W');
-      input.up = true;
-    }
+    if (e.key === 'w') input.up = true;
     if (e.key === 's') input.down = true;
     if (e.key === 'a') input.left = true;
     if (e.key === 'd') input.right = true;

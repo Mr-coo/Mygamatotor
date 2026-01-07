@@ -6,18 +6,24 @@ import { EventSocket, GameName, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
 import { useGameStore } from "../store/game.store"; 
 import wave from "../assets/wave.png"
 import { EventHandle } from "../network/socket/eventHandle";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export function GamePage() {
+export function GamePage() {  
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scores = useGameStore((state)=> state.scores);
   const [isStart, setIsStart] = useState(false);
+  const location = useLocation();
+  const navigate = useNavigate();
+  const gameName = location.state;
 
   useEffect(() => {
+    if(gameName == null) navigate('/game-menu');
+
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext('2d')!;
     const world = new World();
     networkClient.connect();
-    networkClient.sendCommand(EventSocket.JOIN, GameName.FIGHT_OVER_FOOD);
+    networkClient.sendCommand(EventSocket.JOIN, gameName);
 
     networkClient.on(EventSocket.CONNECTED, (data) => {EventHandle.onConnected(world, data);setIsStart(true);});
     networkClient.on(EventSocket.POSITION, (data) => EventHandle.onPosition(world, data));
