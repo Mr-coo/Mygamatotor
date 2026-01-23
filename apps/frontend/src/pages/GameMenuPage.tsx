@@ -18,7 +18,7 @@ export default function GameMenuPage() {
   const cards: Array<Record<string, string>> = [
     { text: 'Fight Over Food1', symbol: Cat1, value: GameName.FIGHT_OVER_FOOD.toString() },
     { text: 'Pong Pong Pong', symbol: Cat1, value: GameName.PONG_PONG_PONG.toString() },
-    { text: 'Fight Over Food3', symbol: Cat1, value: GameName.FIGHT_OVER_FOOD.toString() },
+    { text: 'Beach Ball !!!', symbol: Cat1, value: GameName.BEACH_BALL.toString() },
     { text: 'Fight Over Food4', symbol: Cat1, value: GameName.FIGHT_OVER_FOOD.toString() },
   ];
 

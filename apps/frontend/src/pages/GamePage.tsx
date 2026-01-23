@@ -25,7 +25,7 @@ export function GamePage() {
     networkClient.connect();
     networkClient.sendCommand(EventSocket.JOIN, gameName);
 
-    networkClient.on(EventSocket.CONNECTED, (data) => {EventHandle.onConnected(world, data);setIsStart(true);});
+    networkClient.on(EventSocket.CONNECTED, (data) => {console.log('maklo');EventHandle.onConnected(world, data);setIsStart(true);});
     networkClient.on(EventSocket.POSITION, (data) => EventHandle.onPosition(world, data));
     networkClient.on(EventSocket.REMOVE_ENTITY, (data) => EventHandle.onRemoveEntity(world, data));
     networkClient.on(EventSocket.CREATE_ENTITY, (data) => EventHandle.onCreateEntity(world, data));

@@ -3,13 +3,15 @@ import Wendy from '../assets/splash-screen/wendy.png'
 import Tang from '../assets/cats/taNG_cat.png'
 import Food from '../assets/cat-print.png'
 import Ball from '../assets/ball.png'
+import Ground from '../assets/home/orange-grid.jpg'
 
 const textures : Map<string, string> = new Map([
     ['background', Background],
     ['wendy', Wendy],
     ['tang', Tang],
     ['ball', Ball],
-    ['food', Food]
+    ['food', Food],
+    ['ground', Ground]
 ])
 
 const imageCache = new Map<string, HTMLImageElement>();

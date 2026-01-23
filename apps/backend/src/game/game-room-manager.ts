@@ -5,6 +5,8 @@ import { FightOverFood } from "./games/fight-over-food.service";
 import { Component } from "@game/shared/dist/components/component";
 import { Server, Socket } from "socket.io";
 import { PongPongPong } from "./games/pong-pong-pong.service";
+import { BeachBall } from "./games/beach-ball.service";
+import { parse } from "path";
 
 @Injectable()
 export class GameRoomManager {
@@ -13,10 +15,12 @@ export class GameRoomManager {
 
   create(type : GameName, server: Server): GameLoop {
     const roomId = crypto.randomUUID();
+ 
     let loop : GameLoop;
-    switch (type) {
+    switch (parseInt(type.toString())) {
       case GameName.FIGHT_OVER_FOOD: loop = new FightOverFood(server, roomId);break;
       case GameName.PONG_PONG_PONG: loop = new PongPongPong(server, roomId);break;
+      case GameName.BEACH_BALL: loop = new BeachBall(server, roomId);console.log("CREATE BEACH BALL"); break;
       default: loop = new FightOverFood(server, roomId);break;
     }
 
@@ -55,12 +59,15 @@ export class GameRoomManager {
     if(this.clients.get(client.id) != undefined) return;
 
     let gameLoop : GameLoop | null = null;
-    
+
     this.rooms.forEach((loop, roomId) => {
       if(loop instanceof FightOverFood && type == GameName.FIGHT_OVER_FOOD && loop.isValidToJoin()){
         gameLoop = loop;
       }
       else if(loop instanceof PongPongPong && type == GameName.PONG_PONG_PONG && loop.isValidToJoin()){
+        gameLoop = loop;
+      }
+      else if(loop instanceof BeachBall && type == GameName.BEACH_BALL && loop.isValidToJoin()){
         gameLoop = loop;
       }
     });

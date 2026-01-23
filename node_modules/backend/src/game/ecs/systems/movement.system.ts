@@ -1,5 +1,6 @@
 import {
   Ball,
+  Jump,
   Position,
   Size,
   Velocity,
@@ -13,6 +14,7 @@ export function movementSystem(world: World, deltaTime: number) {
     const position = world.get(e, Position) as Position;
     const size = world.get(e, Size) as Size;
     const velocity = world.get(e, Velocity) as Velocity;
+    const jump = world.get(e, Jump) as Jump;
 
     const speed = velocity.base;
 
@@ -20,7 +22,7 @@ export function movementSystem(world: World, deltaTime: number) {
       velocity.dx * velocity.dx + velocity.dy * velocity.dy,
     );
 
-    if (magnitude > 0) {
+    if (magnitude > 0 && jump && !jump.canJump) {
       velocity.dx /= magnitude;
       velocity.dy /= magnitude;
     }
