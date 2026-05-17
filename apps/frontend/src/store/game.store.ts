@@ -6,6 +6,9 @@ type GameStore = {
   updateScore: (entity: Entity, score: number) => void;
   replaceScores: (scores: Record<Entity, number>) => void;
   removeScores: (entity: Entity) => void;
+
+  duration: { remaining: number; total: number };
+  setDuration: (remaining: number, total: number) => void;
 };
 
 export const useGameStore = create<GameStore>((set) => ({
@@ -22,5 +25,7 @@ export const useGameStore = create<GameStore>((set) => ({
       const { [entity]: _, ...rest } = state.scores;
       return { scores: rest };
     }),
-}));
 
+  duration: { remaining: 0, total: 0 },
+  setDuration: (remaining, total) => set({ duration: { remaining, total } }),
+}));

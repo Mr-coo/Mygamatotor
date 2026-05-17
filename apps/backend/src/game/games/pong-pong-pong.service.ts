@@ -1,14 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { inputSystem } from '../ecs/systems/input.system';
+import { moveInputSystem } from '../ecs/systems/moveInput.system';
 import { movementSystem } from '../ecs/systems/movement.system';
 import { World } from '../ecs/world';
 import { spawnFoodSystem } from '../ecs/systems/spawnFood.system';
-import { Ball, CreateEntityDto, Entity, EventSocket, Input, MovementConstraint, Player, Position, Score, Size, Sprite, Velocity, WORLD_HEIGHT, WORLD_WIDTH } from '@game/shared';
+import { Ball, CreateEntityDto, Duration, Entity, EventSocket, Input, MovementConstraint, Player, Position, Score, Size, Sprite, Velocity, WORLD_HEIGHT, WORLD_WIDTH } from '@game/shared';
 import { BounceBallCollusionSystem } from '../ecs/systems/bounceBallCollusion.system';
 import { addEntity } from '../ecs/systems/addEntity.system';
 import { removeEntity } from '../ecs/systems/removeEntity.System';
 import { sendPosition } from '../ecs/systems/sendPosition.system';
 import { sendScore } from '../ecs/systems/sendScore.system';
+import { durationSystem } from '../ecs/systems/duration.system';
 import { GameLoop } from './game-loop.service';
 import { Component } from '@game/shared/dist/components/component';
 
@@ -33,6 +34,10 @@ export class PongPongPong extends GameLoop {
         [MovementConstraint.name, new MovementConstraint(true, true)],
       ]));
 
+      this.world.addToAdd('duration', new Map<string, Component>([
+        [Duration.name, new Duration(60)],
+      ]));
+
       this.run();
     }
   }
@@ -40,13 +45,14 @@ export class PongPongPong extends GameLoop {
   override run() {
     setInterval(() => {
       this.onTick();
-    }, 100 / this.TICK_RATE);
+    }, 1000 / this.TICK_RATE);
   }
 
   override onTick() {
-    inputSystem(this.world);
+    moveInputSystem(this.world);
     movementSystem(this.world, this.DT);
     BounceBallCollusionSystem(this.world);
+    durationSystem(this.world, this.DT, this.broadCast);
 
     addEntity(this.world, this.broadCast);
     removeEntity(this.world, this.broadCast);

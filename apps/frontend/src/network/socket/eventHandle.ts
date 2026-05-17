@@ -1,8 +1,9 @@
-import { Position, Sprite, type Entity, CreateEntityDto, RemoveEntityDto, PositionDto, ScoreDto, Score } from "@game/shared";
+import { Position, Sprite, type Entity, CreateEntityDto, RemoveEntityDto, PositionDto, ScoreDto, Score, DurationDto } from "@game/shared";
 import { World } from "../../ecs/world";
 import type { Component } from "@game/shared/dist/components/component";
 import { bindKeyboard } from "../../util/keyboardbind";
 import { networkClient } from "./networkClient";
+import { useGameStore } from "../../store/game.store";
 
 export const EventHandle = {
     onConnected(world: World, dto: boolean) {
@@ -51,8 +52,12 @@ export const EventHandle = {
     onScore(world: World, dto : ScoreDto){
         Object.entries(dto.scores).forEach(([entity, score]) => {
             const scoreComp = world.get(entity, Score);
-    
+
             if(scoreComp) scoreComp.value = score.value;
         });
+    },
+
+    onDuration(_world: World, dto: DurationDto) {
+        useGameStore.getState().setDuration(dto.remaining, dto.total);
     },
 }

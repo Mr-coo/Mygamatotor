@@ -11,6 +11,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 export function GamePage() {  
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const scores = useGameStore((state)=> state.scores);
+  const duration = useGameStore((state)=> state.duration);
   const [isStart, setIsStart] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export function GamePage() {
     networkClient.on(EventSocket.REMOVE_ENTITY, (data) => EventHandle.onRemoveEntity(world, data));
     networkClient.on(EventSocket.CREATE_ENTITY, (data) => EventHandle.onCreateEntity(world, data));
     networkClient.on(EventSocket.SCORE, (data) => EventHandle.onScore(world, data));
+    networkClient.on(EventSocket.DURATION, (data) => EventHandle.onDuration(world, data));
 
     startGameLoop(world, ctx);
     
@@ -44,6 +46,12 @@ export function GamePage() {
       {!isStart && (
         <div className="fixed inset-0 z-20 flex items-center justify-center bg-black/70 text-white text-2xl">
           <h3>Waiting for other player...</h3>
+        </div>
+      )}
+
+      {isStart && duration.total > 0 && (
+        <div className="fixed top-10 left-1/2 -translate-x-1/2 z-10 bg-black/60 text-white px-6 py-2 rounded text-3xl font-mono">
+          {Math.ceil(duration.remaining)}s
         </div>
       )}
 
