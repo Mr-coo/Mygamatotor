@@ -1,0 +1,14 @@
+**/node_modules
+**/dist
+**/.next
+**/coverage
+**/.git
+**/.env
+**/.env.*
+!**/.env.example
+**/npm-debug.log
+**/.DS_Store
+apps/backend/dist
+apps/frontend/dist
+packages/shared/dist
+packages/shared/tsconfig.tsbuildinfo
