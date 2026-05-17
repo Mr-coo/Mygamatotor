@@ -22,4 +22,4 @@ RUN DIRECT_URL="postgresql://placeholder:placeholder@localhost:5432/placeholder"
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npx prisma migrate deploy && npm run start:dev"]
+CMD ["sh", "-c", "(cd /app && npm run build --workspace=@game/shared) && npx prisma migrate deploy && npm run start:dev"]
