@@ -46,6 +46,7 @@ export function GamePage() {
     networkClient.on(EventSocket.CREATE_ENTITY, (data) => EventHandle.onCreateEntity(world, data));
     networkClient.on(EventSocket.SCORE, (data) => EventHandle.onScore(world, data));
     networkClient.on(EventSocket.DURATION, (data) => EventHandle.onDuration(world, data));
+    networkClient.on(EventSocket.PAINT, (data) => EventHandle.onPaint(world, data));
 
     startGameLoop(world, ctx);
 

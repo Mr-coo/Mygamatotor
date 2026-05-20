@@ -8,4 +8,6 @@ export var EventSocket;
     EventSocket[EventSocket["REMOVE_ENTITY"] = 5] = "REMOVE_ENTITY";
     EventSocket[EventSocket["SCORE"] = 6] = "SCORE";
     EventSocket[EventSocket["JOIN"] = 7] = "JOIN";
+    EventSocket[EventSocket["DURATION"] = 8] = "DURATION";
+    EventSocket[EventSocket["PAINT"] = 9] = "PAINT";
 })(EventSocket || (EventSocket = {}));

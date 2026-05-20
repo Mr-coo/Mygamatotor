@@ -1,4 +1,4 @@
-import { Position, Size, Sprite, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
+import { Paintable, Position, Size, Sprite, WORLD_HEIGHT, WORLD_WIDTH } from "@game/shared";
 import type { World } from "../world";
 import { getImage } from "../../util/asset";
 
@@ -12,6 +12,15 @@ export function renderSystem(
   if(number >= 2*Math.PI)
   ctx.drawImage(getImage('background'), 0, 0, WORLD_WIDTH, WORLD_HEIGHT)
   // return;
+  for (const e of world.query(Position, Size, Paintable)) {
+    const paintable = world.get(e, Paintable) as Paintable;
+    if (!paintable.color) continue;
+    const position = world.get(e, Position) as Position;
+    const size = world.get(e, Size) as Size;
+    ctx.fillStyle = paintable.color;
+    ctx.fillRect(position.x, position.y, size.width, size.height);
+  }
+
   for(const e of world.query(Position, Size, Sprite)) {
     ctx.save();
     const position = world.get(e, Position) as Position;

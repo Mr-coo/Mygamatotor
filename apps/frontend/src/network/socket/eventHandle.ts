@@ -1,4 +1,4 @@
-import { Position, Sprite, type Entity, CreateEntityDto, RemoveEntityDto, PositionDto, ScoreDto, Score, DurationDto } from "@game/shared";
+import { Position, Sprite, type Entity, CreateEntityDto, RemoveEntityDto, PositionDto, ScoreDto, Score, DurationDto, PaintDto, Paintable } from "@game/shared";
 import { World } from "../../ecs/world";
 import type { Component } from "@game/shared/dist/components/component";
 import { bindKeyboard } from "../../util/keyboardbind";
@@ -59,5 +59,12 @@ export const EventHandle = {
 
     onDuration(_world: World, dto: DurationDto) {
         useGameStore.getState().setDuration(dto.remaining, dto.total);
+    },
+
+    onPaint(world: World, dto: PaintDto) {
+        Object.entries(dto.paints).forEach(([entity, color]) => {
+            const paintable = world.get(entity, Paintable) as Paintable | undefined;
+            if (paintable) paintable.color = color || null;
+        });
     },
 }

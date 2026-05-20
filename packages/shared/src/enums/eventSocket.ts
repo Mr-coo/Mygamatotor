@@ -7,5 +7,6 @@ export enum EventSocket {
     REMOVE_ENTITY,
     SCORE,
     JOIN,
-    DURATION
+    DURATION,
+    PAINT
 }

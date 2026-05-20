@@ -1,5 +1,6 @@
 export declare enum GameName {
     FIGHT_OVER_FOOD = 0,
     PONG_PONG_PONG = 1,
-    BEACH_BALL = 2
+    BEACH_BALL = 2,
+    PAINT = 3
 }

@@ -17,6 +17,8 @@ export * from './components/onGround.js';
 export * from './components/weight.js';
 export * from './components/justCollided.js';
 export * from './components/duration.js';
+export * from './components/paintable.js';
+export * from './components/painter.js';
 
 export * from './entities/entity.js';
 
@@ -28,5 +30,6 @@ export * from './dto/createEntity.dto.js';
 export * from './dto/removeEntity.dto.js';
 export * from './dto/score.dto.js';
 export * from './dto/duration.dto.js';
+export * from './dto/paint.dto.js';
 
 export * from './const/const.js';
