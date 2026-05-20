@@ -32,6 +32,8 @@ services:
       JWT_SECRET: ${JWT_SECRET:-dev-secret-change-me}
       PORT: 3000
       NODE_ENV: development
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "300"
     ports:
       - "3000:3000"
     volumes:
