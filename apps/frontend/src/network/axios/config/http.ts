@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useErrorStore } from "../../../store/error.store";
 
 export const http = axios.create({
   baseURL: "http://localhost:3000/",
@@ -18,19 +19,14 @@ http.interceptors.response.use(
   (response) => response,
   (error) => {
     if (!error.response) {
-      return Promise.reject({
-        type: "NETWORK_ERROR",
-        message: "Unable to reach server",
-      });
+      const message = "Unable to reach server";
+      useErrorStore.getState().showError(message);
+      return Promise.reject({ type: "NETWORK_ERROR", message });
     }
 
     const { status, data } = error.response;
-    console.log(error.response);
-    return Promise.reject({
-      type: "API_ERROR",
-      status,
-      message: data?.message || "Unexpected error",
-      errors: data?.errors,
-    });
+    const message = data?.message || "Unexpected error";
+    useErrorStore.getState().showError(message);
+    return Promise.reject({ type: "API_ERROR", status, message, errors: data?.errors });
   }
 );
