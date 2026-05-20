@@ -4,7 +4,7 @@ import { jumpInputSystem } from '../ecs/systems/jumpInput.system';
 import { movementSystem } from '../ecs/systems/movement.system';
 import { World } from '../ecs/world';
 import { spawnFoodSystem } from '../ecs/systems/spawnFood.system';
-import { Ball, CreateEntityDto, Duration, Entity, EventSocket, Ground, Input, Jump, JustCollided, MovementConstraint, OnGround, Player, Position, Score, Size, Sprite, Velocity, Weight, WORLD_HEIGHT, WORLD_WIDTH } from '@game/shared';
+import { Ball, CreateEntityDto, Duration, Entity, EventSocket, Ground, Input, Jump, JustCollided, MovementConstraint, Net, OnGround, Player, Position, Score, Size, Sprite, Velocity, Weight, WORLD_HEIGHT, WORLD_WIDTH } from '@game/shared';
 import { EatFoodCollusionSystem } from '../ecs/systems/eatFoodCollusion.system';
 import { addEntity } from '../ecs/systems/addEntity.system';
 import { removeEntity } from '../ecs/systems/removeEntity.System';
@@ -15,13 +15,13 @@ import { Component } from '@game/shared/dist/components/component';
 import { GravitySystem } from '../ecs/systems/gravity.system';
 import { BounceBallCollusionSystem } from '../ecs/systems/bounceBallCollusion.system';
 import { BeachBallCollusionSystem } from '../ecs/systems/beachBallCollusion.system';
+import { beachBallScoringSystem } from '../ecs/systems/beachBallScoring.system';
 import { durationSystem } from '../ecs/systems/duration.system';
 
 export class BeachBall extends GameLoop {
   world = new World();
 
   override isValidToJoin() {
-    return false;
     return this.playerCount < 2 && !this.isStart;
   }
 
@@ -41,6 +41,7 @@ export class BeachBall extends GameLoop {
 
   override run() {
     this.addGround();
+    this.addNet();
     this.addBall();
     setInterval(() => {
       this.onTick();
@@ -53,6 +54,7 @@ export class BeachBall extends GameLoop {
     GravitySystem(this.world, this.DT);
     BeachBallCollusionSystem(this.world);
     movementSystem(this.world, this.DT);
+    beachBallScoringSystem(this.world);
     durationSystem(this.world, this.DT, this.broadCast);
 
     addEntity(this.world, this.broadCast);
@@ -62,12 +64,19 @@ export class BeachBall extends GameLoop {
   }
 
   override addPlayer(clientId: string) {
+    const isFirst = this.playerCount === 0;
+    const playerWidth = 150;
+    const spawnX = isFirst
+      ? WORLD_WIDTH / 4 - playerWidth / 2
+      : (3 * WORLD_WIDTH) / 4 - playerWidth / 2;
+    const sprite = isFirst ? 'wendy' : 'tang';
+
     const playerData = new Map<string, Component>([
-      [Position.name, new Position(WORLD_WIDTH/2, WORLD_HEIGHT/3 - 150)],
+      [Position.name, new Position(spawnX, WORLD_HEIGHT * 2 / 3 - playerWidth)],
       [Velocity.name, new Velocity(800)],
       [Input.name, new Input()],
-      [Size.name, new Size(150, 150)],
-      [Sprite.name, new Sprite('wendy', false)],
+      [Size.name, new Size(playerWidth, playerWidth)],
+      [Sprite.name, new Sprite(sprite, false)],
       [Player.name, new Player()],
       [Score.name, new Score()],
       [Jump.name, new Jump(true)],
@@ -89,6 +98,19 @@ export class BeachBall extends GameLoop {
       [Ground.name, new Ground()],
     ]);
     this.world.addToAdd('ground', groundData);
+  }
+
+  addNet(){
+    const netWidth = 30;
+    const netHeight = 450;
+    const netData = new Map<string, Component>([
+      [Position.name, new Position(WORLD_WIDTH/2 - netWidth/2, WORLD_HEIGHT*2/3 - netHeight)],
+      [Size.name, new Size(netWidth, netHeight)],
+      [Sprite.name, new Sprite('net', false)],
+      [MovementConstraint.name, new MovementConstraint(false, false)],
+      [Net.name, new Net()],
+    ]);
+    this.world.addToAdd('net', netData);
   }
   
   addBall(){

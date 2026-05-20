@@ -4,6 +4,7 @@ import Tang from '../assets/cats/taNG_cat.png'
 import Food from '../assets/cat-print.png'
 import Ball from '../assets/ball.png'
 import Ground from '../assets/home/orange-grid.jpg'
+import Net from '../assets/wave.png'
 
 const textures : Map<string, string> = new Map([
     ['background', Background],
@@ -11,7 +12,8 @@ const textures : Map<string, string> = new Map([
     ['tang', Tang],
     ['ball', Ball],
     ['food', Food],
-    ['ground', Ground]
+    ['ground', Ground],
+    ['net', Net]
 ])
 
 const imageCache = new Map<string, HTMLImageElement>();

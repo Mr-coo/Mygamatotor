@@ -12,6 +12,7 @@ export * from './components/healthPotion.js';
 export * from './components/speedPotion.js';
 export * from './components/jump.js';
 export * from './components/ground.js';
+export * from './components/net.js';
 export * from './components/onGround.js';
 export * from './components/weight.js';
 export * from './components/justCollided.js';

@@ -2,6 +2,7 @@ import {
   Ball,
   Ground,
   JustCollided,
+  Net,
   OnGround,
   Player,
   Position,
@@ -48,6 +49,27 @@ export function BeachBallCollusionSystem(world: World) {
         p1.y = p2.y - s1.height;
         velocity.dy = 0;
         onGround.value = true;
+      }
+    }
+
+    for (const n of world.query(Net)) {
+      const np = world.get(n, Position) as Position;
+      const ns = world.get(n, Size) as Size;
+
+      const isIntersect =
+        p1.x < np.x + ns.width &&
+        p1.x + s1.width > np.x &&
+        p1.y < np.y + ns.height &&
+        p1.y + s1.height > np.y;
+
+      if (!isIntersect) continue;
+
+      const playerCenterX = p1.x + s1.width / 2;
+      const netCenterX = np.x + ns.width / 2;
+      if (playerCenterX < netCenterX) {
+        p1.x = np.x - s1.width;
+      } else {
+        p1.x = np.x + ns.width;
       }
     }
   }
@@ -106,6 +128,44 @@ export function BeachBallCollusionSystem(world: World) {
     } else if (p1.x + s1.width >= WORLD_WIDTH && v.dx > 0) {
       p1.x = WORLD_WIDTH - s1.width;
       v.dx = -v.dx * WALL_RESTITUTION;
+    }
+
+    for (const n of world.query(Net)) {
+      const np = world.get(n, Position) as Position;
+      const ns = world.get(n, Size) as Size;
+
+      const isIntersect =
+        p1.x < np.x + ns.width &&
+        p1.x + s1.width > np.x &&
+        p1.y < np.y + ns.height &&
+        p1.y + s1.height > np.y;
+
+      if (!isIntersect) continue;
+
+      const overlapX =
+        Math.min(p1.x + s1.width, np.x + ns.width) -
+        Math.max(p1.x, np.x);
+      const overlapY =
+        Math.min(p1.y + s1.height, np.y + ns.height) -
+        Math.max(p1.y, np.y);
+
+      if (overlapX < overlapY) {
+        if (p1.x + s1.width / 2 < np.x + ns.width / 2) {
+          p1.x = np.x - s1.width;
+          if (v.dx > 0) v.dx = -v.dx * WALL_RESTITUTION;
+        } else {
+          p1.x = np.x + ns.width;
+          if (v.dx < 0) v.dx = -v.dx * WALL_RESTITUTION;
+        }
+      } else {
+        if (p1.y + s1.height / 2 < np.y + ns.height / 2) {
+          p1.y = np.y - s1.height;
+          if (v.dy > 0) v.dy = -v.dy * GROUND_RESTITUTION;
+        } else {
+          p1.y = np.y + ns.height;
+          if (v.dy < 0) v.dy = -v.dy * WALL_RESTITUTION;
+        }
+      }
     }
   }
 
