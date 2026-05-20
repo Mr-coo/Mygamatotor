@@ -50,7 +50,7 @@ export class BeachBall extends GameLoop {
   override onTick() {
     moveInputSystem(this.world);
     jumpInputSystem(this.world);
-    GravitySystem(this.world);
+    GravitySystem(this.world, this.DT);
     BeachBallCollusionSystem(this.world);
     movementSystem(this.world, this.DT);
     durationSystem(this.world, this.DT, this.broadCast);
@@ -99,7 +99,7 @@ export class BeachBall extends GameLoop {
       [Sprite.name, new Sprite('ball', false)],
       [Ball.name, new Ball()],
       [OnGround.name, new OnGround(false)],
-      [Weight.name, new Weight(0.5)],
+      [Weight.name, new Weight(0.3)],
       [JustCollided.name, new JustCollided()],
       [MovementConstraint.name, new MovementConstraint(true, true)],
     ]));
