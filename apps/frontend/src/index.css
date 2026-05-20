@@ -9,6 +9,11 @@
   50% { transform: translateY(-20px); }
 }
 
+@keyframes slideIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
 @font-face{
   font-family: 'Dongle-Regular';
   font-weight: normal;
