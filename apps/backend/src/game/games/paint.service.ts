@@ -8,6 +8,7 @@ import { sendPosition } from '../ecs/systems/sendPosition.system';
 import { sendScore } from '../ecs/systems/sendScore.system';
 import { durationSystem } from '../ecs/systems/duration.system';
 import { paintTrailSystem } from '../ecs/systems/paintTrail.system';
+import { paintScoringSystem } from '../ecs/systems/paintScoring.system';
 import { sendPaint } from '../ecs/systems/sendPaint.system';
 import { GameLoop } from './game-loop.service';
 import { Component } from '@game/shared/dist/components/component';
@@ -22,7 +23,7 @@ export class Paint extends GameLoop {
   world = new World();
 
   override isValidToJoin() {
-    return this.playerCount < 1 && !this.isStart;
+    return this.playerCount < 2 && !this.isStart;
   }
 
   override start() {
@@ -50,6 +51,7 @@ export class Paint extends GameLoop {
     moveInputSystem(this.world);
     movementSystem(this.world, this.DT);
     paintTrailSystem(this.world);
+    paintScoringSystem(this.world);
     durationSystem(this.world, this.DT, this.broadCast);
 
     addEntity(this.world, this.broadCast);
@@ -60,15 +62,21 @@ export class Paint extends GameLoop {
   }
 
   override addPlayer(clientId: string) {
+    const isFirst = this.playerCount === 0;
     const colorIndex = this.playerCount % STARTER_COLORS.length;
     const color = STARTER_COLORS[colorIndex];
+    const playerWidth = 150;
+    const spawnX = isFirst
+      ? WORLD_WIDTH / 4 - playerWidth / 2
+      : (3 * WORLD_WIDTH) / 4 - playerWidth / 2;
+    const sprite = isFirst ? 'wendy' : 'tang';
 
     const playerData = new Map<string, Component>([
-      [Position.name, new Position(WORLD_WIDTH / 2 - 75, WORLD_HEIGHT / 2 - 75)],
+      [Position.name, new Position(spawnX, WORLD_HEIGHT / 2 - playerWidth / 2)],
       [Velocity.name, new Velocity(800)],
       [Input.name, new Input()],
-      [Size.name, new Size(150, 150)],
-      [Sprite.name, new Sprite('wendy', false)],
+      [Size.name, new Size(playerWidth, playerWidth)],
+      [Sprite.name, new Sprite(sprite, false)],
       [Player.name, new Player()],
       [Score.name, new Score()],
       [Painter.name, new Painter(color, 30)],
